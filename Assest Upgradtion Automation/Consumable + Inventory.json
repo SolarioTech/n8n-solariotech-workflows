@@ -1,0 +1,2560 @@
+{
+  "name": "Consumable + Inventory",
+  "nodes": [
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyMinute"
+            }
+          ]
+        },
+        "documentId": {
+          "__rl": true,
+          "value": "",
+          "mode": "list",
+          "cachedResultName": "System Configuration Upgrade Request (Responses)",
+          "cachedResultUrl": ""
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1250990772,
+          "mode": "list",
+          "cachedResultName": "Form Responses 1",
+          "cachedResultUrl": ""
+        },
+        "event": "rowAdded",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTrigger",
+      "typeVersion": 1,
+      "position": [
+        4848,
+        1648
+      ],
+      "id": "cd83c844-45f1-4b0a-b0f3-ebefb1522f9c",
+      "name": "Google Sheets Trigger",
+      "credentials": {
+        "googleSheetsTriggerOAuth2Api": {
+          "id": "4qxKDFstxlLPVWj2",
+          "name": "Google Sheets Trigger account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "7923d7b7-2d52-449f-9401-b7a27cd3ea5f",
+              "name": "Employee Name",
+              "value": "={{ $json[\"Employee Name\"] }}",
+              "type": "string"
+            },
+            {
+              "id": "e369711c-4edc-40ea-b0e5-a1e24d5fafcb",
+              "name": "Employee ID",
+              "value": "={{ $json[\"Employee ID\"] }}",
+              "type": "string"
+            },
+            {
+              "id": "934ffe88-be9f-4467-8036-8711378a9ec3",
+              "name": "Email ",
+              "value": "={{ $json[\"Email \"] }}",
+              "type": "string"
+            },
+            {
+              "id": "d5a0637b-3886-48d1-a885-4b2e4e75d30d",
+              "name": "Component To Upgrade",
+              "value": "={{ $json[\"What components are you requesting to upgrade?\"] }}",
+              "type": "string"
+            },
+            {
+              "id": "1fd52d5b-eb9c-4cb9-b611-e397fe385905",
+              "name": "Reason",
+              "value": "={{ $json[\"Describe the main reason for the upgrade request. (e.g., slow performance, inability to run required software, multi-tasking issues)\"] }}",
+              "type": "string"
+            },
+            {
+              "id": "6672809a-0573-4362-8afa-411cbaaea649",
+              "name": "Date of Request",
+              "value": "={{ $json[\"Date of Request\"] }}",
+              "type": "string"
+            },
+            {
+              "id": "dfd4b78f-97b6-48ad-b351-1fd6d71daa9d",
+              "name": "Performance Impacting Ratings ",
+              "value": "={{ $json[\"How significantly is your current system's performance impacting your work efficiency?\"] }}",
+              "type": "number"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        5072,
+        1648
+      ],
+      "id": "b3e8fb70-241b-4af7-9dff-8a56af631d32",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "operation": "sendAndWait",
+        "sendTo": "",
+        "subject": "System Configuration Upgrade Request",
+        "message": "=<!DOCTYPE html>\n<html>\n<head>\n  <meta charset=\"UTF-8\" />\n  <style>\n    body {\n      font-family: -apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, Arial, sans-serif;\n      background-color: #ffffff;\n      color: #333;\n      max-width: 600px;\n      margin: 0 auto;\n      padding: 24px;\n      line-height: 1.5;\n    }\n\n    h1 {\n      font-size: 22px;\n      margin-bottom: 8px;\n      color: #1f7a4d;\n    }\n\n    .subtitle {\n      color: #666;\n      margin-bottom: 24px;\n    }\n\n    .divider {\n      border-top: 1px solid #eaeaea;\n      margin: 24px 0;\n    }\n\n    .section-title {\n      font-size: 14px;\n      font-weight: 600;\n      text-transform: uppercase;\n      color: #777;\n      margin-bottom: 12px;\n    }\n\n    .details-table {\n      width: 100%;\n      border-collapse: collapse;\n    }\n\n    .details-table td {\n      padding: 8px 0;\n      vertical-align: top;\n    }\n\n    .label {\n      color: #777;\n      width: 45%;\n      font-size: 14px;\n    }\n\n    .value {\n      font-weight: 500;\n      font-size: 14px;\n    }\n\n    .rating {\n      display: inline-block;\n      padding: 4px 10px;\n      background-color: #e8f5ee;\n      color: #1f7a4d;\n      border-radius: 12px;\n      font-size: 13px;\n      font-weight: 600;\n    }\n\n    .justification {\n      background-color: #fafafa;\n      padding: 14px;\n      border-left: 3px solid #1f7a4d;\n      color: #555;\n      font-style: italic;\n    }\n\n    .action-note {\n      margin-top: 24px;\n      padding: 14px;\n      background-color: #fff8e1;\n      color: #8a6d1d;\n      font-size: 14px;\n      border-radius: 4px;\n    }\n\n    .footer {\n      margin-top: 32px;\n      font-size: 13px;\n      color: #888;\n    }\n  </style>\n</head>\n<body>\n\n  <h1>System Configuration Upgrade Request</h1>\n  <p class=\"subtitle\">\n    A new request has been submitted and requires your review.\n  </p>\n\n  <div class=\"divider\"></div>\n\n  <div class=\"section-title\">Request Details</div>\n\n  <table class=\"details-table\">\n    <tr>\n      <td class=\"label\">Employee Name</td>\n      <td class=\"value\">{{ $('Edit Fields').item.json['Employee Name'] }}</td>\n    </tr>\n    <tr>\n      <td class=\"label\">Employee ID</td>\n      <td class=\"value\">{{ $('Edit Fields').item.json['Employee ID'] }}</td>\n    </tr>\n    <tr>\n      <td class=\"label\">Date of Request</td>\n      <td class=\"value\">{{ $('Edit Fields').item.json['Date of Request'] }}</td>\n    </tr>\n    <tr>\n      <td class=\"label\">Component Requested</td>\n      <td class=\"value\">{{ $('Edit Fields').item.json['Component To Upgrade'] }}</td>\n    </tr>\n    <tr>\n      <td class=\"label\">Performance Impact</td>\n      <td class=\"value\">\n        <span class=\"rating\">\n          {{ $('Edit Fields').item.json['Performance Impacting Ratings '] }}/5\n        </span>\n      </td>\n    </tr>\n  </table>\n\n  <div class=\"divider\"></div>\n\n  <div class=\"section-title\">Justification</div>\n  <div class=\"justification\">\n    {{ $('Edit Fields').item.json['Reason'] }}\n  </div>\n\n  <div class=\"action-note\">\n    <strong>Action required:</strong>  \n    Please approve or reject this request based on budget, business need, and IT policy.\n  </div>\n\n  <div class=\"footer\">\n    Thank you,<br />\n    <strong>IT Automation System</strong>\n  </div>\n\n</body>\n</html>",
+        "approvalOptions": {
+          "values": {
+            "approvalType": "double",
+            "disapproveLabel": "Reject"
+          }
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        5296,
+        1648
+      ],
+      "id": "0ebb33d3-dc11-4c13-ac8d-a49fe3859d04",
+      "name": "Mail Send For Approval/Rejection To IT Admin",
+      "webhookId": "16f0c1f0-79bb-417a-a39c-bacbcb02de8c",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "H7g7BDYjBGFvV5G8",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "41c52019-379b-412b-a254-e15e2ad047d5",
+              "leftValue": "={{ $json.data.approved }}",
+              "rightValue": true,
+              "operator": {
+                "type": "boolean",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        5520,
+        1648
+      ],
+      "id": "3eced743-d499-4e08-8db8-2a49f7cc4ca0",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $('Edit Fields').item.json[\"Email \"] }}",
+        "subject": "System Configuration Upgrade Request - Rejected",
+        "message": "=<!DOCTYPE html>\n<html>\n<head>\n  <meta charset=\"UTF-8\" />\n  <style>\n    body {\n      font-family: -apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, Arial, sans-serif;\n      background-color: #ffffff;\n      color: #333;\n      max-width: 600px;\n      margin: 0 auto;\n      padding: 24px;\n      line-height: 1.6;\n    }\n\n    .header {\n      text-align: center;\n      padding: 20px 0;\n      border-bottom: 3px solid #d32f2f;\n      margin-bottom: 24px;\n    }\n\n    h1 {\n      font-size: 24px;\n      margin: 0 0 8px 0;\n      color: #d32f2f;\n    }\n\n    .status-badge {\n      display: inline-block;\n      padding: 6px 16px;\n      background-color: #ffebee;\n      color: #c62828;\n      border-radius: 20px;\n      font-size: 13px;\n      font-weight: 600;\n      text-transform: uppercase;\n      letter-spacing: 0.5px;\n    }\n\n    .greeting {\n      font-size: 15px;\n      margin-bottom: 20px;\n      color: #555;\n    }\n\n    .message-body {\n      background-color: #fafafa;\n      padding: 20px;\n      border-left: 4px solid #d32f2f;\n      margin: 24px 0;\n      color: #444;\n    }\n\n    .divider {\n      border-top: 1px solid #eaeaea;\n      margin: 24px 0;\n    }\n\n    .section-title {\n      font-size: 14px;\n      font-weight: 600;\n      text-transform: uppercase;\n      color: #777;\n      margin-bottom: 12px;\n    }\n\n    .details-table {\n      width: 100%;\n      border-collapse: collapse;\n      margin: 16px 0;\n    }\n\n    .details-table td {\n      padding: 10px 0;\n      vertical-align: top;\n      border-bottom: 1px solid #f0f0f0;\n    }\n\n    .label {\n      color: #777;\n      width: 45%;\n      font-size: 14px;\n      font-weight: 500;\n    }\n\n    .value {\n      font-weight: 600;\n      font-size: 14px;\n      color: #333;\n    }\n\n    .info-box {\n      background-color: #e3f2fd;\n      border-left: 4px solid #1976d2;\n      padding: 16px;\n      margin: 20px 0;\n      font-size: 14px;\n      color: #0d47a1;\n    }\n\n    .info-box strong {\n      display: block;\n      margin-bottom: 8px;\n      font-size: 15px;\n    }\n\n    .footer {\n      margin-top: 32px;\n      padding-top: 20px;\n      border-top: 1px solid #eaeaea;\n      font-size: 13px;\n      color: #888;\n      text-align: center;\n    }\n\n    .footer strong {\n      color: #555;\n    }\n  </style>\n</head>\n<body>\n\n  <div class=\"header\">\n    <h1>System Configuration Upgrade Request</h1>\n    <span class=\"status-badge\">Rejected</span>\n  </div>\n\n  <p class=\"greeting\">\n    Dear {{ $(\"Edit Fields\").item.json[\"Employee Name\"] }},\n  </p>\n\n  <div class=\"message-body\">\n    <p style=\"margin-top: 0;\">\n      We regret to inform you that your system configuration upgrade request has been <strong>rejected</strong> by the IT Administration team after careful review.\n    </p>\n    <p style=\"margin-bottom: 0;\">\n      This decision was made based on IT policy guidelines, and business priority assessments.\n    </p>\n  </div>\n\n  <div class=\"divider\"></div>\n\n  <div class=\"section-title\">Request Summary</div>\n\n  <table class=\"details-table\">\n    <tr>\n      <td class=\"label\">Employee ID</td>\n      <td class=\"value\">{{ $(\"Edit Fields\").item.json[\"Employee ID\"] }}</td>\n    </tr>\n    <tr>\n      <td class=\"label\">Date of Request</td>\n      <td class=\"value\">{{ $(\"Edit Fields\").item.json[\"Date of Request\"] }}</td>\n    </tr>\n    <tr>\n      <td class=\"label\">Component Requested</td>\n      <td class=\"value\">{{ $(\"Edit Fields\").item.json[\"Component To Upgrade\"] }}</td>\n    </tr>\n    <tr>\n      <td class=\"label\">Performance Impact Rating</td>\n      <td class=\"value\">{{ $(\"Edit Fields\").item.json[\"Performance Impacting Ratings \"] }}/5</td>\n    </tr>\n  </table>\n\n  <div class=\"divider\"></div>\n\n  <div class=\"info-box\">\n    <strong>What happens next?</strong>\n    If you believe this decision should be reconsidered or if your work requirements have changed significantly, please contact the IT Administration team directly to discuss alternative solutions or submit a new request with additional justification.\n  </div>\n\n  <p style=\"color: #555; font-size: 14px;\">\n    We appreciate your understanding and encourage you to reach out if you have any questions or concerns regarding this decision.\n  </p>\n\n  <div class=\"footer\">\n    Best regards,<br />\n    <strong>IT Administration Team</strong><br />\n    <em>This is an automated notification from the IT Request Management System</em>\n  </div>\n\n</body>\n</html>",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        5744,
+        1744
+      ],
+      "id": "a2071875-b196-43ce-8a52-089a9fe189b2",
+      "name": "Rejection Mail",
+      "webhookId": "e1dd9f39-3e43-487f-84d8-7ddb2e4b6a7f",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "H7g7BDYjBGFvV5G8",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $('Edit Fields').item.json[\"Email \"] }}",
+        "subject": "System Configuration Upgrade Request - Approved",
+        "message": "=<!DOCTYPE html>\n<html>\n<head>\n  <meta charset=\"UTF-8\" />\n  <style>\n    body {\n      font-family: -apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, Arial, sans-serif;\n      background-color: #ffffff;\n      color: #333;\n      max-width: 600px;\n      margin: 0 auto;\n      padding: 24px;\n      line-height: 1.6;\n    }\n\n    .header {\n      text-align: center;\n      padding: 20px 0;\n      border-bottom: 3px solid #1f7a4d;\n      margin-bottom: 24px;\n    }\n\n    h1 {\n      font-size: 24px;\n      margin: 0 0 8px 0;\n      color: #1f7a4d;\n    }\n\n    .status-badge {\n      display: inline-block;\n      padding: 6px 16px;\n      background-color: #e8f5ee;\n      color: #1f7a4d;\n      border-radius: 20px;\n      font-size: 13px;\n      font-weight: 600;\n      text-transform: uppercase;\n      letter-spacing: 0.5px;\n    }\n\n    .greeting {\n      font-size: 15px;\n      margin-bottom: 20px;\n      color: #555;\n    }\n\n    .message-body {\n      background-color: #e8f5ee;\n      padding: 20px;\n      border-left: 4px solid #1f7a4d;\n      margin: 24px 0;\n      color: #444;\n    }\n\n    .divider {\n      border-top: 1px solid #eaeaea;\n      margin: 24px 0;\n    }\n\n    .section-title {\n      font-size: 14px;\n      font-weight: 600;\n      text-transform: uppercase;\n      color: #777;\n      margin-bottom: 12px;\n    }\n\n    .details-table {\n      width: 100%;\n      border-collapse: collapse;\n      margin: 16px 0;\n    }\n\n    .details-table td {\n      padding: 10px 0;\n      vertical-align: top;\n      border-bottom: 1px solid #f0f0f0;\n    }\n\n    .label {\n      color: #777;\n      width: 45%;\n      font-size: 14px;\n      font-weight: 500;\n    }\n\n    .value {\n      font-weight: 600;\n      font-size: 14px;\n      color: #333;\n    }\n\n    .info-box {\n      background-color: #fff8e1;\n      border-left: 4px solid #f9a825;\n      padding: 16px;\n      margin: 20px 0;\n      font-size: 14px;\n      color: #8a6d1d;\n    }\n\n    .info-box strong {\n      display: block;\n      margin-bottom: 8px;\n      font-size: 15px;\n    }\n\n    .footer {\n      margin-top: 32px;\n      padding-top: 20px;\n      border-top: 1px solid #eaeaea;\n      font-size: 13px;\n      color: #888;\n      text-align: center;\n    }\n\n    .footer strong {\n      color: #555;\n    }\n  </style>\n</head>\n<body>\n\n  <div class=\"header\">\n    <h1>System Configuration Upgrade Request</h1>\n    <span class=\"status-badge\">✓ Approved</span>\n  </div>\n\n  <p class=\"greeting\">\n    Dear {{ $(\"Edit Fields\").item.json[\"Employee Name\"] }},\n  </p>\n\n  <div class=\"message-body\">\n    <p style=\"margin-top: 0;\">\n      We are pleased to inform you that your system configuration upgrade request has been <strong>approved</strong> by the IT Administration team.\n    </p>\n    <p style=\"margin-bottom: 0;\">\n      Your request has been reviewed and authorized based on business requirements, performance impact assessment, and available resources. The IT team will proceed with the upgrade process accordingly.\n    </p>\n  </div>\n\n  <div class=\"divider\"></div>\n\n  <div class=\"section-title\">Approved Request Details</div>\n\n  <table class=\"details-table\">\n    <tr>\n      <td class=\"label\">Employee ID</td>\n      <td class=\"value\">{{ $(\"Edit Fields\").item.json[\"Employee ID\"] }}</td>\n    </tr>\n    <tr>\n      <td class=\"label\">Date of Request</td>\n      <td class=\"value\">{{ $(\"Edit Fields\").item.json[\"Date of Request\"] }}</td>\n    </tr>\n    <tr>\n      <td class=\"label\">Component Approved</td>\n      <td class=\"value\">{{ $(\"Edit Fields\").item.json[\"Component To Upgrade\"] }}</td>\n    </tr>\n    <tr>\n      <td class=\"label\">Performance Impact Rating</td>\n      <td class=\"value\">{{ $(\"Edit Fields\").item.json[\"Performance Impacting Ratings \"] }}/5</td>\n    </tr>\n  </table>\n\n  <div class=\"divider\"></div>\n\n  <div class=\"info-box\">\n    <strong>Next Steps:</strong>\n    The IT team will contact you within 2-3 business days to schedule the upgrade installation. Please ensure you have backed up any critical data and coordinate with your supervisor regarding system downtime during the upgrade process.\n  </div>\n\n  <p style=\"color: #555; font-size: 14px;\">\n    If you have any questions or need to reschedule the upgrade appointment, please contact the IT Administration team directly.\n  </p>\n\n  <div class=\"footer\">\n    Best regards,<br />\n    <strong>IT Administration Team</strong><br />\n    <em>This is an automated notification from the IT Request Management System</em>\n  </div>\n\n</body>\n</html>",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        5744,
+        1552
+      ],
+      "id": "b3821bf2-50b1-42ea-acc9-b4da6330035a",
+      "name": "Approval Mail",
+      "webhookId": "4e8bac02-4e79-4c3b-8b7b-e6d7f4c699e6",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "H7g7BDYjBGFvV5G8",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "",
+          "mode": "list",
+          "cachedResultName": "Upgradation Request Log",
+          "cachedResultUrl": ""
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": ""
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Employee ID": "={{ $('Edit Fields').item.json['Employee ID'] }}",
+            "Employee Name": "={{ $('Edit Fields').item.json['Employee Name'] }}",
+            "Request Date": "={{ $('Edit Fields').item.json['Date of Request'] }}",
+            "Requested For": "={{ $('Edit Fields').item.json['Component To Upgrade'] }}",
+            "Request Status": "={{ $('If').item.json.data.approved === true ? 'Approved' : 'Rejected' }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Employee ID",
+              "displayName": "Employee ID",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Employee Name",
+              "displayName": "Employee Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Request Status",
+              "displayName": "Request Status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Request Date",
+              "displayName": "Request Date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Requested For",
+              "displayName": "Requested For",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        5968,
+        1744
+      ],
+      "id": "08595209-742d-422d-9eee-787c123febf3",
+      "name": "Updating Request Log",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "C8TGTyiM0cUmgssJ",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "",
+          "mode": "list",
+          "cachedResultName": "Upgradation Request Log",
+          "cachedResultUrl": ""
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": ""
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Employee ID": "={{ $('Edit Fields').item.json['Employee ID'] }}",
+            "Employee Name": "={{ $('Edit Fields').item.json['Employee Name'] }}",
+            "Request Date": "={{ $('Edit Fields').item.json['Date of Request'] }}",
+            "Requested For": "={{ $('Edit Fields').item.json['Component To Upgrade'] }}",
+            "Request Status": "={{ $('If').item.json.data.approved === true ? 'Approved' : 'Rejected' }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Employee ID",
+              "displayName": "Employee ID",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Employee Name",
+              "displayName": "Employee Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Request Status",
+              "displayName": "Request Status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Request Date",
+              "displayName": "Request Date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Requested For",
+              "displayName": "Requested For",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        5968,
+        1552
+      ],
+      "id": "015019d3-0d87-4dd4-8303-cbf5b899ad12",
+      "name": "Updating Request Log2",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "C8TGTyiM0cUmgssJ",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "",
+          "mode": "list",
+          "cachedResultName": "Consumable Sheet",
+          "cachedResultUrl": ""
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1702610546,
+          "mode": "list",
+          "cachedResultName": "Consumables",
+          "cachedResultUrl": ""
+        },
+        "filtersUI": {
+          "values": [
+            {
+              "lookupColumn": "Item_Name",
+              "lookupValue": "={{ $json[\"Requested For\"] }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        6192,
+        1552
+      ],
+      "id": "07aee1aa-6d98-48ba-9749-da5b1f0d286b",
+      "name": "Filtering Out The Requesting Component Data",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "C8TGTyiM0cUmgssJ",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.Available_Qty }}",
+                    "rightValue": 1,
+                    "operator": {
+                      "type": "number",
+                      "operation": "gt"
+                    },
+                    "id": "2331458c-6075-4f5c-80f9-3551ffb82c63"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Stock Available"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "c28b616e-aff6-41ba-8d91-2adb5b8ca6b7",
+                    "leftValue": "={{ $json.Available_Qty }}",
+                    "rightValue": 1,
+                    "operator": {
+                      "type": "number",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Low Stock"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "7d947c09-3cce-42bf-b394-4dae4e2f1463",
+                    "leftValue": "={{ $json.Available_Qty }}",
+                    "rightValue": 0,
+                    "operator": {
+                      "type": "number",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Out of Stock"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.4,
+      "position": [
+        6416,
+        1536
+      ],
+      "id": "487c2c6e-f31f-410b-b8da-86f63f6b816a",
+      "name": "Switch"
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $('Edit Fields').item.json[\"Email \"] }}",
+        "subject": "System Upgrade Request - Scheduled for Installation",
+        "message": "=<!DOCTYPE html>\n<html>\n<head>\n  <meta charset=\"UTF-8\" />\n  <title>System Upgrade Scheduled</title>\n</head>\n\n<body style=\"margin:0; padding:0; background-color:#ffffff;\">\n<table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" role=\"presentation\">\n<tr>\n<td style=\"padding:20px; font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif; color:#333;\">\n\n  <!-- TITLE -->\n  <h1 style=\"margin:0 0 6px 0; font-size:22px; color:#1f7a4d;\">\n    System Upgrade Scheduled\n  </h1>\n\n  <p style=\"margin:0 0 12px 0; font-size:14px; color:#666;\">\n    Your approved system configuration upgrade has now been scheduled.\n  </p>\n\n  <!-- GREETING -->\n  <p style=\"font-size:14px; color:#555;\">\n    Dear {{ $('Edit Fields').item.json['Employee Name'] }},\n  </p>\n\n  <!-- UPDATED SENTENCE -->\n  <p style=\"font-size:14px; color:#444;\">\n    As communicated earlier, your system configuration upgrade request was approved.\n    We are pleased to inform you that the upgrade has been\n    <strong>successfully scheduled for today</strong>.\n  </p>\n\n  <!-- SCHEDULE DETAILS -->\n  <h3 style=\"font-size:13px; color:#777; letter-spacing:0.04em; margin-top:20px;\">\n    SCHEDULE DETAILS\n  </h3>\n\n  <table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\">\n    <tr>\n      <td style=\"padding:6px 0; color:#777;\">Scheduled Date</td>\n      <td style=\"padding:6px 0; font-weight:600;\">\n        {{ $json.responseDate }}\n      </td>\n    </tr>\n    <tr>\n      <td style=\"padding:6px 0; color:#777;\">Component</td>\n      <td style=\"padding:6px 0; font-weight:600;\">\n        {{ $('Edit Fields').item.json['Component To Upgrade'] }}\n      </td>\n    </tr>\n    <tr>\n      <td style=\"padding:6px 0; color:#777;\">Employee ID</td>\n      <td style=\"padding:6px 0; font-weight:600;\">\n        {{ $('Edit Fields').item.json['Employee ID'] }}\n      </td>\n    </tr>\n  </table>\n\n  <!-- SUPPORT -->\n  <p style=\"font-size:14px; color:#444;\">\n    If you are unavailable on the scheduled date or need to reschedule,\n    please contact the IT Administration team as soon as possible.\n  </p>\n\n  <!-- FOOTER -->\n  <p style=\"margin-top:24px; font-size:13px; color:#777;\">\n    Best regards,<br>\n    <strong>IT Administration Team</strong><br>\n    <em>This is an automated notification from the IT Request Management System</em>\n  </p>\n\n</td>\n</tr>\n</table>\n</body>\n</html>\n",
+        "options": {
+          "ccList": ""
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        7072,
+        1232
+      ],
+      "id": "9a496bb8-b4fa-4e7e-839e-fece88c76365",
+      "name": "Schedule Mail",
+      "webhookId": "19ae7a64-8fdf-43d2-87b6-e4cb3ed76da2",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "H7g7BDYjBGFvV5G8",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const requestDate = new Date($(\"Edit Fields\").first().json[\"Date of Request\"]);\n\n// Add 3 business days\nlet responseDate = new Date(requestDate);\nlet daysAdded = 0;\n\nwhile (daysAdded < 3) {\n  responseDate.setDate(responseDate.getDate() + 1);\n  \n  // Check if it's a weekday (Monday = 1, Friday = 5)\n  const dayOfWeek = responseDate.getDay();\n  if (dayOfWeek !== 0 && dayOfWeek !== 6) {\n    daysAdded++;\n  }\n}\n\n// Format as DD/MM/YYYY\nconst dd = String(responseDate.getDate()).padStart(2, '0');\nconst mm = String(responseDate.getMonth() + 1).padStart(2, '0');\nconst yyyy = responseDate.getFullYear();\n\nconst formattedResponseDate = `${dd}/${mm}/${yyyy}`;\n\nreturn [\n  {\n    json: {\n      responseDate: formattedResponseDate\n    }\n  }\n];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        6656,
+        1232
+      ],
+      "id": "ec90c887-83cd-41f8-9734-3cac6659c897",
+      "name": "Code in JavaScript"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        6864,
+        1232
+      ],
+      "id": "d226631f-8839-4d0e-88be-9dbd5ffcdf18",
+      "name": "Wait",
+      "webhookId": "3a23364d-25fd-4557-a8ce-816acfcc784f"
+    },
+    {
+      "parameters": {
+        "operation": "sendAndWait",
+        "sendTo": "",
+        "subject": "Job Completion Confirmation - Action Required",
+        "message": "=<!DOCTYPE html>\n<html>\n<head>\n  <meta charset=\"UTF-8\" />\n  <style>\n    body {\n      font-family: -apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, Arial, sans-serif;\n      background-color: #ffffff;\n      color: #333;\n      max-width: 600px;\n      margin: 0 auto;\n      padding: 24px;\n      line-height: 1.6;\n    }\n\n    .header {\n      text-align: center;\n      padding: 20px 0;\n      border-bottom: 3px solid #1976d2;\n      margin-bottom: 24px;\n    }\n\n    h1 {\n      font-size: 24px;\n      margin: 0 0 8px 0;\n      color: #1976d2;\n    }\n\n    .status-badge {\n      display: inline-block;\n      padding: 6px 16px;\n      background-color: #e3f2fd;\n      color: #1976d2;\n      border-radius: 20px;\n      font-size: 13px;\n      font-weight: 600;\n      text-transform: uppercase;\n      letter-spacing: 0.5px;\n    }\n\n    .greeting {\n      font-size: 15px;\n      margin-bottom: 20px;\n      color: #555;\n    }\n\n    .message-body {\n      background-color: #f5f5f5;\n      padding: 20px;\n      border-left: 4px solid #1976d2;\n      margin: 24px 0;\n      color: #444;\n    }\n\n    .divider {\n      border-top: 1px solid #eaeaea;\n      margin: 24px 0;\n    }\n\n    .section-title {\n      font-size: 14px;\n      font-weight: 600;\n      text-transform: uppercase;\n      color: #777;\n      margin-bottom: 12px;\n    }\n\n    .details-table {\n      width: 100%;\n      border-collapse: collapse;\n      margin: 16px 0;\n    }\n\n    .details-table td {\n      padding: 10px 0;\n      vertical-align: top;\n      border-bottom: 1px solid #f0f0f0;\n    }\n\n    .label {\n      color: #777;\n      width: 45%;\n      font-size: 14px;\n      font-weight: 500;\n    }\n\n    .value {\n      font-weight: 600;\n      font-size: 14px;\n      color: #333;\n    }\n\n    .action-note {\n      background-color: #fff8e1;\n      border-left: 4px solid #f9a825;\n      padding: 16px;\n      margin: 20px 0;\n      font-size: 14px;\n      color: #8a6d1d;\n    }\n\n    .action-note strong {\n      display: block;\n      margin-bottom: 8px;\n      font-size: 15px;\n    }\n\n    .action-buttons {\n      text-align: center;\n      margin: 30px 0;\n    }\n\n    .action-button {\n      display: inline-block;\n      padding: 12px 24px;\n      margin: 0 10px;\n      text-decoration: none;\n      border-radius: 6px;\n      font-weight: 600;\n      font-size: 14px;\n      transition: opacity 0.2s;\n    }\n\n    .action-button:hover {\n      opacity: 0.8;\n    }\n\n    .btn-completed {\n      background-color: #1f7a4d;\n      color: #ffffff;\n    }\n\n    .btn-pending {\n      background-color: #f9a825;\n      color: #ffffff;\n    }\n\n    .reminder-note {\n      background-color: #e3f2fd;\n      border-left: 4px solid #1976d2;\n      padding: 16px;\n      margin: 20px 0;\n      font-size: 14px;\n      color: #0d47a1;\n    }\n\n    .footer {\n      margin-top: 32px;\n      padding-top: 20px;\n      border-top: 1px solid #eaeaea;\n      font-size: 13px;\n      color: #888;\n      text-align: center;\n    }\n\n    .footer strong {\n      color: #555;\n    }\n  </style>\n</head>\n<body>\n\n  <div class=\"header\">\n    <h1>Job Completion Confirmation</h1>\n    <span class=\"status-badge\">Action Required</span>\n  </div>\n\n  <p class=\"greeting\">\n    Dear IT Admin,\n  </p>\n\n  <div class=\"message-body\">\n    <p style=\"margin-top: 0;\">\n      This is a confirmation request regarding the system upgrade job that was scheduled for today.\n    </p>\n    <p style=\"margin-bottom: 0;\">\n      Please confirm whether the upgrade installation has been completed for the employee listed below.\n    </p>\n  </div>\n\n  <div class=\"divider\"></div>\n\n  <div class=\"section-title\">Job Details</div>\n\n  <table class=\"details-table\">\n    <tr>\n      <td class=\"label\">Employee Name</td>\n      <td class=\"value\">{{ $('Edit Fields').item.json['Employee Name'] }}</td>\n    </tr>\n    <tr>\n      <td class=\"label\">Employee ID</td>\n      <td class=\"value\">{{ $('Edit Fields').item.json['Employee ID'] }}</td>\n    </tr>\n    <tr>\n      <td class=\"label\">Scheduled Date</td>\n      <td class=\"value\">{{ $('Code in JavaScript').item.json.responseDate }}</td>\n    </tr>\n    <tr>\n      <td class=\"label\">Component Upgraded</td>\n      <td class=\"value\">{{ $('Edit Fields').item.json['Component To Upgrade'] }}</td>\n    </tr>\n  </table>\n\n  <div class=\"divider\"></div>\n\n  <div class=\"reminder-note\">\n    <strong>Note:</strong> If no confirmation is received, reminder emails will be sent every 15 minutes until the job status is confirmed.\n  </div>\n\n  <div class=\"footer\">\n    Best regards,<br />\n    <strong>IT Request Management System</strong><br />\n    <em>This is an automated notification</em>\n  </div>\n\n</body>\n</html>",
+        "approvalOptions": {
+          "values": {
+            "approvalType": "double",
+            "approveLabel": "Done",
+            "disapproveLabel": "Not Yet"
+          }
+        },
+        "options": {
+          "limitWaitTime": {
+            "values": {
+              "resumeUnit": "minutes"
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        7296,
+        1232
+      ],
+      "id": "952e818f-3ef2-4549-b81d-879a328146c0",
+      "name": "IT Admin Job Completion Confirmation Mail",
+      "webhookId": "0ac78ba1-3b3a-4599-803e-928aa9e22e99",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "H7g7BDYjBGFvV5G8",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "id-1",
+              "leftValue": "={{ $json.data.approved }}",
+              "rightValue": "true",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "ff54cab5-2c71-4eef-95a8-f36b24dd6796",
+      "name": "Check If Job Confirmed",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        7568,
+        1232
+      ]
+    },
+    {
+      "parameters": {},
+      "id": "ebdc11f4-c3b7-42ae-af61-7c57e7823ec3",
+      "name": "Wait 15 Minutes",
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        7888,
+        1392
+      ],
+      "webhookId": "30387cfa-9c66-4ef2-b89c-83d0a330fc83"
+    },
+    {
+      "parameters": {
+        "operation": "sendAndWait",
+        "sendTo": "",
+        "subject": "REMINDER: Job Completion Confirmation - Action Required",
+        "message": "=<!DOCTYPE html>\n<html>\n<head>\n  <meta charset=\"UTF-8\" />\n  <style>\n    body {\n      font-family: -apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, Arial, sans-serif;\n      background-color: #ffffff;\n      color: #333;\n      max-width: 600px;\n      margin: 0 auto;\n      padding: 24px;\n      line-height: 1.6;\n    }\n\n    .header {\n      text-align: center;\n      padding: 20px 0;\n      border-bottom: 3px solid #f9a825;\n      margin-bottom: 24px;\n    }\n\n    h1 {\n      font-size: 24px;\n      margin: 0 0 8px 0;\n      color: #f9a825;\n    }\n\n    .status-badge {\n      display: inline-block;\n      padding: 6px 16px;\n      background-color: #fff8e1;\n      color: #f9a825;\n      border-radius: 20px;\n      font-size: 13px;\n      font-weight: 600;\n      text-transform: uppercase;\n      letter-spacing: 0.5px;\n    }\n\n    .greeting {\n      font-size: 15px;\n      margin-bottom: 20px;\n      color: #555;\n    }\n\n    .message-body {\n      background-color: #fff8e1;\n      padding: 20px;\n      border-left: 4px solid #f9a825;\n      margin: 24px 0;\n      color: #444;\n    }\n\n    .divider {\n      border-top: 1px solid #eaeaea;\n      margin: 24px 0;\n    }\n\n    .section-title {\n      font-size: 14px;\n      font-weight: 600;\n      text-transform: uppercase;\n      color: #777;\n      margin-bottom: 12px;\n    }\n\n    .details-table {\n      width: 100%;\n      border-collapse: collapse;\n      margin: 16px 0;\n    }\n\n    .details-table td {\n      padding: 10px 0;\n      vertical-align: top;\n      border-bottom: 1px solid #f0f0f0;\n    }\n\n    .label {\n      color: #777;\n      width: 45%;\n      font-size: 14px;\n      font-weight: 500;\n    }\n\n    .value {\n      font-weight: 600;\n      font-size: 14px;\n      color: #333;\n    }\n\n    .action-note {\n      background-color: #ffebee;\n      border-left: 4px solid #d32f2f;\n      padding: 16px;\n      margin: 20px 0;\n      font-size: 14px;\n      color: #c62828;\n    }\n\n    .action-note strong {\n      display: block;\n      margin-bottom: 8px;\n      font-size: 15px;\n    }\n\n    .reminder-note {\n      background-color: #e3f2fd;\n      border-left: 4px solid #1976d2;\n      padding: 16px;\n      margin: 20px 0;\n      font-size: 14px;\n      color: #0d47a1;\n    }\n\n    .footer {\n      margin-top: 32px;\n      padding-top: 20px;\n      border-top: 1px solid #eaeaea;\n      font-size: 13px;\n      color: #888;\n      text-align: center;\n    }\n\n    .footer strong {\n      color: #555;\n    }\n  </style>\n</head>\n<body>\n\n  <div class=\"header\">\n    <h1>⚠️ REMINDER: Job Completion Confirmation</h1>\n    <span class=\"status-badge\">Action Required</span>\n  </div>\n\n  <p class=\"greeting\">\n    Dear IT Admin,\n  </p>\n\n  <div class=\"message-body\">\n    <p style=\"margin-top: 0;\">\n      <strong>This is a reminder</strong> regarding the system upgrade job completion confirmation that is still pending.\n    </p>\n    <p style=\"margin-bottom: 0;\">\n      We have not yet received confirmation on whether the upgrade installation has been completed for the employee listed below.\n    </p>\n  </div>\n\n  <div class=\"divider\"></div>\n\n  <div class=\"section-title\">Job Details</div>\n\n  <table class=\"details-table\">\n    <tr>\n      <td class=\"label\">Employee Name</td>\n      <td class=\"value\">{{ $('Edit Fields').item.json['Employee Name'] }}</td>\n    </tr>\n    <tr>\n      <td class=\"label\">Employee ID</td>\n      <td class=\"value\">{{ $('Edit Fields').item.json['Employee ID'] }}</td>\n    </tr>\n    <tr>\n      <td class=\"label\">Scheduled Date</td>\n      <td class=\"value\">{{ $('Code in JavaScript').item.json.responseDate }}</td>\n    </tr>\n    <tr>\n      <td class=\"label\">Component Upgraded</td>\n      <td class=\"value\">{{ $('Edit Fields').item.json['Component To Upgrade'] }}</td>\n    </tr>\n  </table>\n\n  <div class=\"divider\"></div>\n\n  <div class=\"action-note\">\n    <strong>⚠️ Urgent Action Required:</strong>\n    Please confirm the job completion status as soon as possible to proceed with the workflow.\n  </div>\n\n  <div class=\"reminder-note\">\n    <strong>Note:</strong> If no confirmation is received, additional reminder emails will continue to be sent every 15 minutes until the job status is confirmed.\n  </div>\n\n  <div class=\"footer\">\n    Best regards,<br />\n    <strong>IT Request Management System</strong><br />\n    <em>This is an automated reminder notification</em>\n  </div>\n\n</body>\n</html>",
+        "approvalOptions": {
+          "values": {
+            "approvalType": "double",
+            "approveLabel": "Done",
+            "disapproveLabel": "Not Yet"
+          }
+        },
+        "options": {
+          "limitWaitTime": {
+            "values": {
+              "resumeUnit": "minutes"
+            }
+          }
+        }
+      },
+      "id": "98e61736-10c7-4178-a5a3-f44109af47ea",
+      "name": "Send Reminder to IT Admin",
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        7632,
+        1392
+      ],
+      "webhookId": "c53f344b-ba09-4f97-8698-bd5134625e97",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "H7g7BDYjBGFvV5G8",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const items = $input.all();\n\nconst requestedForRaw = $('Updating Request Log2').first().json[\"Requested For\"];\n\n// normalize text\nconst requestedFor = requestedForRaw.toLowerCase();\n\n// detect request type\nlet requestType = null;\n\nif (requestedFor.includes(\"ram\")) {\n  requestType = \"RAM\";\n} else if (requestedFor.includes(\"ssd\")) {\n  requestType = \"Storage\";\n}\n\nconst updatedItems = items.map(item => {\n  const data = item.json;\n\n  if (requestType === \"RAM\") {\n    data.RAM = `${data.RAM} + ${requestedForRaw}`;\n  } \n  else if (requestType === \"Storage\") {\n    data.Storage = `${data.Storage} + ${requestedForRaw}`;\n  }\n\n  return { json: data };\n});\n\nreturn updatedItems;"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        8096,
+        1152
+      ],
+      "id": "7387515c-4dcd-4ea1-9d98-4b887966b14a",
+      "name": "Code Logic Fo Updating Values In Asset Data"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "",
+          "mode": "list",
+          "cachedResultName": "SolarioTech Asset Data",
+          "cachedResultUrl": ""
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 893909467,
+          "mode": "list",
+          "cachedResultName": "Assets",
+          "cachedResultUrl": ""
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Asset_ID": "={{ $json.Asset_ID }}",
+            "Category": "={{ $json.Category }}",
+            "Brand": "={{ $json.Brand }}",
+            "Model": "={{ $json.Model }}",
+            "CPU": "={{ $json.CPU }}",
+            "RAM": "={{ $json.RAM }}",
+            "Storage": "={{ $json.Storage }}",
+            "Serial_No": "={{ $json.Serial_No }}",
+            "Purchase_Date": "={{ $json.Purchase_Date }}",
+            "Warranty_End": "={{ $json.Warranty_End }}",
+            "Asset_Status": "={{ $json.Asset_Status }}",
+            "Assigned_To": "={{ $json.Assigned_To }}",
+            "Employee_Name": "={{ $json.Employee_Name }}",
+            "Assigned_Date": "={{ $json.Assigned_Date }}",
+            "Condition": "={{ $json.Condition }}",
+            "Location": "={{ $json.Location }}",
+            "Remarks": "={{ $json.Remarks }}"
+          },
+          "matchingColumns": [
+            "Asset_ID"
+          ],
+          "schema": [
+            {
+              "id": "Asset_ID",
+              "displayName": "Asset_ID",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Category",
+              "displayName": "Category",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Brand",
+              "displayName": "Brand",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Model",
+              "displayName": "Model",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "CPU",
+              "displayName": "CPU",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "RAM",
+              "displayName": "RAM",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Storage",
+              "displayName": "Storage",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Serial_No",
+              "displayName": "Serial_No",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Purchase_Date",
+              "displayName": "Purchase_Date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Warranty_End",
+              "displayName": "Warranty_End",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Asset_Status",
+              "displayName": "Asset_Status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Assigned_To",
+              "displayName": "Assigned_To",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Employee_Name",
+              "displayName": "Employee_Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Assigned_Date",
+              "displayName": "Assigned_Date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Condition",
+              "displayName": "Condition",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Location",
+              "displayName": "Location",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Remarks",
+              "displayName": "Remarks",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "readOnly": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        8304,
+        1152
+      ],
+      "id": "5f4e2be3-8acf-4a15-9cb4-345d194dca96",
+      "name": "Update Asset Data",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "C8TGTyiM0cUmgssJ",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "",
+          "mode": "list",
+          "cachedResultName": "SolarioTech Asset Data",
+          "cachedResultUrl": ""
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 893909467,
+          "mode": "list",
+          "cachedResultName": "Assets",
+          "cachedResultUrl": ""
+        },
+        "filtersUI": {
+          "values": [
+            {
+              "lookupColumn": "Assigned_To",
+              "lookupValue": "={{ $('Edit Fields').item.json[\"Employee ID\"] }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        7856,
+        1152
+      ],
+      "id": "bb1ab7db-baaf-468f-b642-9fb0e3cea102",
+      "name": "Getting Asset Data",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "C8TGTyiM0cUmgssJ",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "",
+          "mode": "list",
+          "cachedResultName": "Consumable Sheet",
+          "cachedResultUrl": ""
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1702610546,
+          "mode": "list",
+          "cachedResultName": "Consumables",
+          "cachedResultUrl": ""
+        },
+        "filtersUI": {
+          "values": [
+            {
+              "lookupColumn": "Item_Name",
+              "lookupValue": "={{ $('Updating Request Log2').item.json[\"Requested For\"] }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        8512,
+        1152
+      ],
+      "id": "83da1b1c-3bc1-4f9d-b859-d4e637c883d1",
+      "name": "Getting Consumable Data",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "C8TGTyiM0cUmgssJ",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const items = $input.all();\n\n// how many items are being assigned\nconst assignQty = 1; // change if needed\n\nconst updatedItems = items.map(item => {\n  const data = item.json;\n\n  data.In_Use = Number(data.In_Use) + assignQty;\n  data.Available_Qty = Number(data.Available_Qty) - assignQty;\n\n  // safety: prevent negative stock\n  if (data.Available_Qty < 0) {\n    data.Available_Qty = 0;\n  }\n\n  // optional: update status\n  if (data.Available_Qty <= data.Min_Stock) {\n    data.Status = \"LOW\";\n  }\n\n  return { json: data };\n});\n\nreturn updatedItems;\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        8720,
+        1152
+      ],
+      "id": "90b2297e-39ca-49be-87ff-7cc8e185798f",
+      "name": "Code in JavaScript1"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "",
+          "mode": "list",
+          "cachedResultName": "Consumable Sheet",
+          "cachedResultUrl": ""
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1702610546,
+          "mode": "list",
+          "cachedResultName": "Consumables",
+          "cachedResultUrl": ""
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Item_ID": "={{ $json.Item_ID }}",
+            "Item_Name": "={{ $json.Item_Name }}",
+            "Category": "={{ $json.Category }}",
+            "Total_Qty": "={{ $json.Total_Qty }}",
+            "In_Use": "={{ $json.In_Use }}",
+            "Available_Qty": "={{ $json.Available_Qty }}",
+            "Min_Stock": "={{ $json.Min_Stock }}",
+            "Status": "={{ $json.Status }}",
+            "Vendor": "={{ $json.Vendor }}",
+            "Last_Purchase": "={{ $json.Last_Purchase }}",
+            "Remarks": "={{ $json.Remarks }}"
+          },
+          "matchingColumns": [
+            "Item_ID"
+          ],
+          "schema": [
+            {
+              "id": "Item_ID",
+              "displayName": "Item_ID",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Item_Name",
+              "displayName": "Item_Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Category",
+              "displayName": "Category",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Total_Qty",
+              "displayName": "Total_Qty",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "In_Use",
+              "displayName": "In_Use",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Available_Qty",
+              "displayName": "Available_Qty",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Min_Stock",
+              "displayName": "Min_Stock",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Status",
+              "displayName": "Status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Vendor",
+              "displayName": "Vendor",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Last_Purchase",
+              "displayName": "Last_Purchase",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Remarks",
+              "displayName": "Remarks",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "readOnly": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        8928,
+        1152
+      ],
+      "id": "1a63801e-b9c5-4038-8566-dcfba5285d9f",
+      "name": "Updating Consumable Sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "C8TGTyiM0cUmgssJ",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "",
+          "mode": "list",
+          "cachedResultName": "Assigned Consumable Log",
+          "cachedResultUrl": ""
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": ""
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Item_ID": "={{ $json.Item_ID }}",
+            "Iten_Name": "={{ $json.Item_Name }}",
+            "Employee Name": "={{ $('Update Asset Data').item.json.Employee_Name }}",
+            "Employee ID": "={{ $('Update Asset Data').item.json.Assigned_To }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Employee ID",
+              "displayName": "Employee ID",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Employee Name",
+              "displayName": "Employee Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Item_ID",
+              "displayName": "Item_ID",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Iten_Name",
+              "displayName": "Iten_Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Assigned Date",
+              "displayName": "Assigned Date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        9136,
+        1152
+      ],
+      "id": "cc81b230-6482-47be-8b48-41fb6f5be7a0",
+      "name": "Append row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "C8TGTyiM0cUmgssJ",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $('Edit Fields').item.json[\"Email \"] }}",
+        "subject": "System Upgrade Request - Scheduled for Installation",
+        "message": "=<!DOCTYPE html>\n<html>\n<head>\n  <meta charset=\"UTF-8\" />\n  <title>System Upgrade Scheduled</title>\n</head>\n\n<body style=\"margin:0; padding:0; background-color:#ffffff;\">\n<table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" role=\"presentation\">\n<tr>\n<td style=\"padding:20px; font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif; color:#333;\">\n\n  <!-- TITLE -->\n  <h1 style=\"margin:0 0 6px 0; font-size:22px; color:#1f7a4d;\">\n    System Upgrade Scheduled\n  </h1>\n\n  <p style=\"margin:0 0 12px 0; font-size:14px; color:#666;\">\n    Your approved system configuration upgrade has now been scheduled.\n  </p>\n\n  <!-- GREETING -->\n  <p style=\"font-size:14px; color:#555;\">\n    Dear {{ $('Edit Fields').item.json['Employee Name'] }},\n  </p>\n\n  <!-- UPDATED SENTENCE -->\n  <p style=\"font-size:14px; color:#444;\">\n    As communicated earlier, your system configuration upgrade request was approved.\n    We are pleased to inform you that the upgrade has been\n    <strong>successfully scheduled for today</strong>.\n  </p>\n\n  <!-- SCHEDULE DETAILS -->\n  <h3 style=\"font-size:13px; color:#777; letter-spacing:0.04em; margin-top:20px;\">\n    SCHEDULE DETAILS\n  </h3>\n\n  <table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\">\n    <tr>\n      <td style=\"padding:6px 0; color:#777;\">Scheduled Date</td>\n      <td style=\"padding:6px 0; font-weight:600;\">\n        {{ $json.responseDate }}\n      </td>\n    </tr>\n    <tr>\n      <td style=\"padding:6px 0; color:#777;\">Component</td>\n      <td style=\"padding:6px 0; font-weight:600;\">\n        {{ $('Edit Fields').item.json['Component To Upgrade'] }}\n      </td>\n    </tr>\n    <tr>\n      <td style=\"padding:6px 0; color:#777;\">Employee ID</td>\n      <td style=\"padding:6px 0; font-weight:600;\">\n        {{ $('Edit Fields').item.json['Employee ID'] }}\n      </td>\n    </tr>\n  </table>\n\n  <!-- SUPPORT -->\n  <p style=\"font-size:14px; color:#444;\">\n    If you are unavailable on the scheduled date or need to reschedule,\n    please contact the IT Administration team as soon as possible.\n  </p>\n\n  <!-- FOOTER -->\n  <p style=\"margin-top:24px; font-size:13px; color:#777;\">\n    Best regards,<br>\n    <strong>IT Administration Team</strong><br>\n    <em>This is an automated notification from the IT Request Management System</em>\n  </p>\n\n</td>\n</tr>\n</table>\n</body>\n</html>\n",
+        "options": {
+          "ccList": ""
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        7104,
+        1760
+      ],
+      "id": "b27224cc-bfe4-4d10-b63b-1edc3e802e6c",
+      "name": "Schedule Mail1",
+      "webhookId": "19ae7a64-8fdf-43d2-87b6-e4cb3ed76da2",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "H7g7BDYjBGFvV5G8",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const requestDate = new Date($(\"Edit Fields\").first().json[\"Date of Request\"]);\n\n// Add 3 business days\nlet responseDate = new Date(requestDate);\nlet daysAdded = 0;\n\nwhile (daysAdded < 3) {\n  responseDate.setDate(responseDate.getDate() + 1);\n  \n  // Check if it's a weekday (Monday = 1, Friday = 5)\n  const dayOfWeek = responseDate.getDay();\n  if (dayOfWeek !== 0 && dayOfWeek !== 6) {\n    daysAdded++;\n  }\n}\n\n// Format as DD/MM/YYYY\nconst dd = String(responseDate.getDate()).padStart(2, '0');\nconst mm = String(responseDate.getMonth() + 1).padStart(2, '0');\nconst yyyy = responseDate.getFullYear();\n\nconst formattedResponseDate = `${dd}/${mm}/${yyyy}`;\n\nreturn [\n  {\n    json: {\n      responseDate: formattedResponseDate\n    }\n  }\n];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        6688,
+        1760
+      ],
+      "id": "9efbc9ea-3b60-4d70-a23d-d8c057e0ce12",
+      "name": "Code in JavaScript2"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        6896,
+        1760
+      ],
+      "id": "cd8b5c52-f4ea-4f96-b03f-e53034b54a66",
+      "name": "Wait1",
+      "webhookId": "3a23364d-25fd-4557-a8ce-816acfcc784f"
+    },
+    {
+      "parameters": {
+        "operation": "sendAndWait",
+        "sendTo": "",
+        "subject": "Job Completion Confirmation - Action Required",
+        "message": "=<!DOCTYPE html>\n<html>\n<head>\n  <meta charset=\"UTF-8\" />\n  <style>\n    body {\n      font-family: -apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, Arial, sans-serif;\n      background-color: #ffffff;\n      color: #333;\n      max-width: 600px;\n      margin: 0 auto;\n      padding: 24px;\n      line-height: 1.6;\n    }\n\n    .header {\n      text-align: center;\n      padding: 20px 0;\n      border-bottom: 3px solid #1976d2;\n      margin-bottom: 24px;\n    }\n\n    h1 {\n      font-size: 24px;\n      margin: 0 0 8px 0;\n      color: #1976d2;\n    }\n\n    .status-badge {\n      display: inline-block;\n      padding: 6px 16px;\n      background-color: #e3f2fd;\n      color: #1976d2;\n      border-radius: 20px;\n      font-size: 13px;\n      font-weight: 600;\n      text-transform: uppercase;\n      letter-spacing: 0.5px;\n    }\n\n    .greeting {\n      font-size: 15px;\n      margin-bottom: 20px;\n      color: #555;\n    }\n\n    .message-body {\n      background-color: #f5f5f5;\n      padding: 20px;\n      border-left: 4px solid #1976d2;\n      margin: 24px 0;\n      color: #444;\n    }\n\n    .divider {\n      border-top: 1px solid #eaeaea;\n      margin: 24px 0;\n    }\n\n    .section-title {\n      font-size: 14px;\n      font-weight: 600;\n      text-transform: uppercase;\n      color: #777;\n      margin-bottom: 12px;\n    }\n\n    .details-table {\n      width: 100%;\n      border-collapse: collapse;\n      margin: 16px 0;\n    }\n\n    .details-table td {\n      padding: 10px 0;\n      vertical-align: top;\n      border-bottom: 1px solid #f0f0f0;\n    }\n\n    .label {\n      color: #777;\n      width: 45%;\n      font-size: 14px;\n      font-weight: 500;\n    }\n\n    .value {\n      font-weight: 600;\n      font-size: 14px;\n      color: #333;\n    }\n\n    .action-note {\n      background-color: #fff8e1;\n      border-left: 4px solid #f9a825;\n      padding: 16px;\n      margin: 20px 0;\n      font-size: 14px;\n      color: #8a6d1d;\n    }\n\n    .action-note strong {\n      display: block;\n      margin-bottom: 8px;\n      font-size: 15px;\n    }\n\n    .action-buttons {\n      text-align: center;\n      margin: 30px 0;\n    }\n\n    .action-button {\n      display: inline-block;\n      padding: 12px 24px;\n      margin: 0 10px;\n      text-decoration: none;\n      border-radius: 6px;\n      font-weight: 600;\n      font-size: 14px;\n      transition: opacity 0.2s;\n    }\n\n    .action-button:hover {\n      opacity: 0.8;\n    }\n\n    .btn-completed {\n      background-color: #1f7a4d;\n      color: #ffffff;\n    }\n\n    .btn-pending {\n      background-color: #f9a825;\n      color: #ffffff;\n    }\n\n    .reminder-note {\n      background-color: #e3f2fd;\n      border-left: 4px solid #1976d2;\n      padding: 16px;\n      margin: 20px 0;\n      font-size: 14px;\n      color: #0d47a1;\n    }\n\n    .footer {\n      margin-top: 32px;\n      padding-top: 20px;\n      border-top: 1px solid #eaeaea;\n      font-size: 13px;\n      color: #888;\n      text-align: center;\n    }\n\n    .footer strong {\n      color: #555;\n    }\n  </style>\n</head>\n<body>\n\n  <div class=\"header\">\n    <h1>Job Completion Confirmation</h1>\n    <span class=\"status-badge\">Action Required</span>\n  </div>\n\n  <p class=\"greeting\">\n    Dear IT Admin,\n  </p>\n\n  <div class=\"message-body\">\n    <p style=\"margin-top: 0;\">\n      This is a confirmation request regarding the system upgrade job that was scheduled for today.\n    </p>\n    <p style=\"margin-bottom: 0;\">\n      Please confirm whether the upgrade installation has been completed for the employee listed below.\n    </p>\n  </div>\n\n  <div class=\"divider\"></div>\n\n  <div class=\"section-title\">Job Details</div>\n\n  <table class=\"details-table\">\n    <tr>\n      <td class=\"label\">Employee Name</td>\n      <td class=\"value\">{{ $('Edit Fields').item.json['Employee Name'] }}</td>\n    </tr>\n    <tr>\n      <td class=\"label\">Employee ID</td>\n      <td class=\"value\">{{ $('Edit Fields').item.json['Employee ID'] }}</td>\n    </tr>\n    <tr>\n      <td class=\"label\">Scheduled Date</td>\n      <td class=\"value\">{{ $('Code in JavaScript2').item.json.responseDate }}</td>\n    </tr>\n    <tr>\n      <td class=\"label\">Component Upgraded</td>\n      <td class=\"value\">{{ $('Edit Fields').item.json['Component To Upgrade'] }}</td>\n    </tr>\n  </table>\n\n  <div class=\"divider\"></div>\n\n  <div class=\"reminder-note\">\n    <strong>Note:</strong> If no confirmation is received, reminder emails will be sent every 15 minutes until the job status is confirmed.\n  </div>\n\n  <div class=\"footer\">\n    Best regards,<br />\n    <strong>IT Request Management System</strong><br />\n    <em>This is an automated notification</em>\n  </div>\n\n</body>\n</html>",
+        "approvalOptions": {
+          "values": {
+            "approvalType": "double",
+            "approveLabel": "Done",
+            "disapproveLabel": "Not Yet"
+          }
+        },
+        "options": {
+          "limitWaitTime": {
+            "values": {
+              "resumeUnit": "minutes"
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        7328,
+        1760
+      ],
+      "id": "976dbd2a-fe85-436a-9c28-f3eba391df99",
+      "name": "IT Admin Job Completion Confirmation Mail1",
+      "webhookId": "0ac78ba1-3b3a-4599-803e-928aa9e22e99",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "H7g7BDYjBGFvV5G8",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "id-1",
+              "leftValue": "={{ $json.data.approved }}",
+              "rightValue": "true",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "0e4e96ff-486c-44d9-a1f6-014ac475904c",
+      "name": "Check If Job Confirmed1",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        7600,
+        1760
+      ]
+    },
+    {
+      "parameters": {},
+      "id": "2808b4ed-540d-4f21-9e81-eafd74ae799f",
+      "name": "Wait 15 Minutes1",
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        7920,
+        1920
+      ],
+      "webhookId": "30387cfa-9c66-4ef2-b89c-83d0a330fc83"
+    },
+    {
+      "parameters": {
+        "operation": "sendAndWait",
+        "sendTo": "",
+        "subject": "REMINDER: Job Completion Confirmation - Action Required",
+        "message": "=<!DOCTYPE html>\n<html>\n<head>\n  <meta charset=\"UTF-8\" />\n  <style>\n    body {\n      font-family: -apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, Arial, sans-serif;\n      background-color: #ffffff;\n      color: #333;\n      max-width: 600px;\n      margin: 0 auto;\n      padding: 24px;\n      line-height: 1.6;\n    }\n\n    .header {\n      text-align: center;\n      padding: 20px 0;\n      border-bottom: 3px solid #f9a825;\n      margin-bottom: 24px;\n    }\n\n    h1 {\n      font-size: 24px;\n      margin: 0 0 8px 0;\n      color: #f9a825;\n    }\n\n    .status-badge {\n      display: inline-block;\n      padding: 6px 16px;\n      background-color: #fff8e1;\n      color: #f9a825;\n      border-radius: 20px;\n      font-size: 13px;\n      font-weight: 600;\n      text-transform: uppercase;\n      letter-spacing: 0.5px;\n    }\n\n    .greeting {\n      font-size: 15px;\n      margin-bottom: 20px;\n      color: #555;\n    }\n\n    .message-body {\n      background-color: #fff8e1;\n      padding: 20px;\n      border-left: 4px solid #f9a825;\n      margin: 24px 0;\n      color: #444;\n    }\n\n    .divider {\n      border-top: 1px solid #eaeaea;\n      margin: 24px 0;\n    }\n\n    .section-title {\n      font-size: 14px;\n      font-weight: 600;\n      text-transform: uppercase;\n      color: #777;\n      margin-bottom: 12px;\n    }\n\n    .details-table {\n      width: 100%;\n      border-collapse: collapse;\n      margin: 16px 0;\n    }\n\n    .details-table td {\n      padding: 10px 0;\n      vertical-align: top;\n      border-bottom: 1px solid #f0f0f0;\n    }\n\n    .label {\n      color: #777;\n      width: 45%;\n      font-size: 14px;\n      font-weight: 500;\n    }\n\n    .value {\n      font-weight: 600;\n      font-size: 14px;\n      color: #333;\n    }\n\n    .action-note {\n      background-color: #ffebee;\n      border-left: 4px solid #d32f2f;\n      padding: 16px;\n      margin: 20px 0;\n      font-size: 14px;\n      color: #c62828;\n    }\n\n    .action-note strong {\n      display: block;\n      margin-bottom: 8px;\n      font-size: 15px;\n    }\n\n    .reminder-note {\n      background-color: #e3f2fd;\n      border-left: 4px solid #1976d2;\n      padding: 16px;\n      margin: 20px 0;\n      font-size: 14px;\n      color: #0d47a1;\n    }\n\n    .footer {\n      margin-top: 32px;\n      padding-top: 20px;\n      border-top: 1px solid #eaeaea;\n      font-size: 13px;\n      color: #888;\n      text-align: center;\n    }\n\n    .footer strong {\n      color: #555;\n    }\n  </style>\n</head>\n<body>\n\n  <div class=\"header\">\n    <h1>⚠️ REMINDER: Job Completion Confirmation</h1>\n    <span class=\"status-badge\">Action Required</span>\n  </div>\n\n  <p class=\"greeting\">\n    Dear IT Admin,\n  </p>\n\n  <div class=\"message-body\">\n    <p style=\"margin-top: 0;\">\n      <strong>This is a reminder</strong> regarding the system upgrade job completion confirmation that is still pending.\n    </p>\n    <p style=\"margin-bottom: 0;\">\n      We have not yet received confirmation on whether the upgrade installation has been completed for the employee listed below.\n    </p>\n  </div>\n\n  <div class=\"divider\"></div>\n\n  <div class=\"section-title\">Job Details</div>\n\n  <table class=\"details-table\">\n    <tr>\n      <td class=\"label\">Employee Name</td>\n      <td class=\"value\">{{ $('Edit Fields').item.json['Employee Name'] }}</td>\n    </tr>\n    <tr>\n      <td class=\"label\">Employee ID</td>\n      <td class=\"value\">{{ $('Edit Fields').item.json['Employee ID'] }}</td>\n    </tr>\n    <tr>\n      <td class=\"label\">Scheduled Date</td>\n      <td class=\"value\">{{ $('Code in JavaScript2').item.json.responseDate }}</td>\n    </tr>\n    <tr>\n      <td class=\"label\">Component Upgraded</td>\n      <td class=\"value\">{{ $('Edit Fields').item.json['Component To Upgrade'] }}</td>\n    </tr>\n  </table>\n\n  <div class=\"divider\"></div>\n\n  <div class=\"action-note\">\n    <strong>⚠️ Urgent Action Required:</strong>\n    Please confirm the job completion status as soon as possible to proceed with the workflow.\n  </div>\n\n  <div class=\"reminder-note\">\n    <strong>Note:</strong> If no confirmation is received, additional reminder emails will continue to be sent every 15 minutes until the job status is confirmed.\n  </div>\n\n  <div class=\"footer\">\n    Best regards,<br />\n    <strong>IT Request Management System</strong><br />\n    <em>This is an automated reminder notification</em>\n  </div>\n\n</body>\n</html>",
+        "approvalOptions": {
+          "values": {
+            "approvalType": "double",
+            "approveLabel": "Done",
+            "disapproveLabel": "Not Yet"
+          }
+        },
+        "options": {
+          "limitWaitTime": {
+            "values": {
+              "resumeUnit": "minutes"
+            }
+          }
+        }
+      },
+      "id": "27dc7ea3-203d-4838-906e-5bd5b7599224",
+      "name": "Send Reminder to IT Admin1",
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        7664,
+        1920
+      ],
+      "webhookId": "c53f344b-ba09-4f97-8698-bd5134625e97",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "H7g7BDYjBGFvV5G8",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const items = $input.all();\n\nconst requestedForRaw = $('Updating Request Log2').first().json[\"Requested For\"];\n\n// normalize text\nconst requestedFor = requestedForRaw.toLowerCase();\n\n// detect request type\nlet requestType = null;\n\nif (requestedFor.includes(\"ram\")) {\n  requestType = \"RAM\";\n} else if (requestedFor.includes(\"ssd\")) {\n  requestType = \"Storage\";\n}\n\nconst updatedItems = items.map(item => {\n  const data = item.json;\n\n  if (requestType === \"RAM\") {\n    data.RAM = `${data.RAM} + ${requestedForRaw}`;\n  } \n  else if (requestType === \"Storage\") {\n    data.Storage = `${data.Storage} + ${requestedForRaw}`;\n  }\n\n  return { json: data };\n});\n\nreturn updatedItems;"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        8128,
+        1680
+      ],
+      "id": "8a9ffc7c-cc6a-4f92-b96f-a051cafff952",
+      "name": "Code Logic Fo Updating Values In Asset Data1"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "",
+          "mode": "list",
+          "cachedResultName": "SolarioTech Asset Data",
+          "cachedResultUrl": ""
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 893909467,
+          "mode": "list",
+          "cachedResultName": "Assets",
+          "cachedResultUrl": ""
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Asset_ID": "={{ $json.Asset_ID }}",
+            "Category": "={{ $json.Category }}",
+            "Brand": "={{ $json.Brand }}",
+            "Model": "={{ $json.Model }}",
+            "CPU": "={{ $json.CPU }}",
+            "RAM": "={{ $json.RAM }}",
+            "Storage": "={{ $json.Storage }}",
+            "Serial_No": "={{ $json.Serial_No }}",
+            "Purchase_Date": "={{ $json.Purchase_Date }}",
+            "Warranty_End": "={{ $json.Warranty_End }}",
+            "Asset_Status": "={{ $json.Asset_Status }}",
+            "Assigned_To": "={{ $json.Assigned_To }}",
+            "Employee_Name": "={{ $json.Employee_Name }}",
+            "Assigned_Date": "={{ $json.Assigned_Date }}",
+            "Condition": "={{ $json.Condition }}",
+            "Location": "={{ $json.Location }}",
+            "Remarks": "={{ $json.Remarks }}"
+          },
+          "matchingColumns": [
+            "Asset_ID"
+          ],
+          "schema": [
+            {
+              "id": "Asset_ID",
+              "displayName": "Asset_ID",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Category",
+              "displayName": "Category",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Brand",
+              "displayName": "Brand",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Model",
+              "displayName": "Model",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "CPU",
+              "displayName": "CPU",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "RAM",
+              "displayName": "RAM",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Storage",
+              "displayName": "Storage",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Serial_No",
+              "displayName": "Serial_No",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Purchase_Date",
+              "displayName": "Purchase_Date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Warranty_End",
+              "displayName": "Warranty_End",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Asset_Status",
+              "displayName": "Asset_Status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Assigned_To",
+              "displayName": "Assigned_To",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Employee_Name",
+              "displayName": "Employee_Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Assigned_Date",
+              "displayName": "Assigned_Date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Condition",
+              "displayName": "Condition",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Location",
+              "displayName": "Location",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Remarks",
+              "displayName": "Remarks",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "readOnly": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        8336,
+        1680
+      ],
+      "id": "9875bbb3-1de6-4182-8a1d-40b9a6210703",
+      "name": "Update Asset Data1",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "C8TGTyiM0cUmgssJ",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "",
+          "mode": "list",
+          "cachedResultName": "SolarioTech Asset Data",
+          "cachedResultUrl": ""
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 893909467,
+          "mode": "list",
+          "cachedResultName": "Assets",
+          "cachedResultUrl": ""
+        },
+        "filtersUI": {
+          "values": [
+            {
+              "lookupColumn": "Assigned_To",
+              "lookupValue": "={{ $('Edit Fields').item.json[\"Employee ID\"] }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        7888,
+        1680
+      ],
+      "id": "2fbbae1a-0fae-4d5a-9ca0-78fb173ae48b",
+      "name": "Getting Asset Data1",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "C8TGTyiM0cUmgssJ",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "",
+          "mode": "list",
+          "cachedResultName": "Consumable Sheet",
+          "cachedResultUrl": ""
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1702610546,
+          "mode": "list",
+          "cachedResultName": "Consumables",
+          "cachedResultUrl": ""
+        },
+        "filtersUI": {
+          "values": [
+            {
+              "lookupColumn": "Item_Name",
+              "lookupValue": "={{ $('Updating Request Log2').item.json[\"Requested For\"] }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        8544,
+        1680
+      ],
+      "id": "95b73bf5-449f-45ed-a59a-437193380ecb",
+      "name": "Getting Consumable Data1",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "C8TGTyiM0cUmgssJ",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const items = $input.all();\n\n// how many items are being assigned\nconst assignQty = 1; // change if needed\n\nconst updatedItems = items.map(item => {\n  const data = item.json;\n\n  data.In_Use = Number(data.In_Use) + assignQty;\n  data.Available_Qty = Number(data.Available_Qty) - assignQty;\n\n  // safety: prevent negative stock\n  if (data.Available_Qty < 0) {\n    data.Available_Qty = 0;\n  }\n\n  // optional: update status\n  if (data.Available_Qty <= data.Min_Stock) {\n    data.Status = \"LOW\";\n  }\n\n  return { json: data };\n});\n\nreturn updatedItems;\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        8752,
+        1680
+      ],
+      "id": "8f07dd3b-cb74-4826-a388-f5c8fe9733ae",
+      "name": "Code in JavaScript3"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "",
+          "mode": "list",
+          "cachedResultName": "Consumable Sheet",
+          "cachedResultUrl": ""
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1702610546,
+          "mode": "list",
+          "cachedResultName": "Consumables",
+          "cachedResultUrl": ""
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Item_ID": "={{ $json.Item_ID }}",
+            "Item_Name": "={{ $json.Item_Name }}",
+            "Category": "={{ $json.Category }}",
+            "Total_Qty": "={{ $json.Total_Qty }}",
+            "In_Use": "={{ $json.In_Use }}",
+            "Available_Qty": "={{ $json.Available_Qty }}",
+            "Min_Stock": "={{ $json.Min_Stock }}",
+            "Status": "={{ $json.Status }}",
+            "Vendor": "={{ $json.Vendor }}",
+            "Last_Purchase": "={{ $json.Last_Purchase }}",
+            "Remarks": "={{ $json.Remarks }}"
+          },
+          "matchingColumns": [
+            "Item_ID"
+          ],
+          "schema": [
+            {
+              "id": "Item_ID",
+              "displayName": "Item_ID",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Item_Name",
+              "displayName": "Item_Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Category",
+              "displayName": "Category",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Total_Qty",
+              "displayName": "Total_Qty",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "In_Use",
+              "displayName": "In_Use",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Available_Qty",
+              "displayName": "Available_Qty",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Min_Stock",
+              "displayName": "Min_Stock",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Status",
+              "displayName": "Status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Vendor",
+              "displayName": "Vendor",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Last_Purchase",
+              "displayName": "Last_Purchase",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Remarks",
+              "displayName": "Remarks",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "readOnly": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        8960,
+        1680
+      ],
+      "id": "1ec84789-8778-49a5-b48c-2a2491016fa0",
+      "name": "Updating Consumable Sheet1",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "C8TGTyiM0cUmgssJ",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "",
+          "mode": "list",
+          "cachedResultName": "Assigned Consumable Log",
+          "cachedResultUrl": ""
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": ""
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Item_ID": "={{ $json.Item_ID }}",
+            "Iten_Name": "={{ $json.Item_Name }}",
+            "Employee Name": "={{ $('Update Asset Data1').item.json.Employee_Name }}",
+            "Employee ID": "={{ $('Update Asset Data1').item.json.Assigned_To }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Employee ID",
+              "displayName": "Employee ID",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Employee Name",
+              "displayName": "Employee Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Item_ID",
+              "displayName": "Item_ID",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Iten_Name",
+              "displayName": "Iten_Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Assigned Date",
+              "displayName": "Assigned Date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        9168,
+        1680
+      ],
+      "id": "107025e8-0f0d-40ff-8163-61640cbf6578",
+      "name": "Append row in sheet1",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "C8TGTyiM0cUmgssJ",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "",
+        "subject": "Urgent: Inventory Stock Alert - Immediate Restocking Required",
+        "message": "=<!DOCTYPE html>\n<html>\n<head>\n  <meta charset=\"UTF-8\" />\n  <style>\n    body {\n      font-family: -apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, Arial, sans-serif;\n      background-color: #ffffff;\n      color: #333;\n      max-width: 600px;\n      margin: 0 auto;\n      padding: 24px;\n      line-height: 1.6;\n    }\n\n    .header {\n      text-align: center;\n      padding: 20px 0;\n      border-bottom: 3px solid #d32f2f;\n      margin-bottom: 24px;\n    }\n\n    h1 {\n      font-size: 24px;\n      margin: 0 0 8px 0;\n      color: #d32f2f;\n    }\n\n    .status-badge {\n      display: inline-block;\n      padding: 6px 16px;\n      background-color: #ffebee;\n      color: #c62828;\n      border-radius: 20px;\n      font-size: 13px;\n      font-weight: 600;\n      text-transform: uppercase;\n      letter-spacing: 0.5px;\n    }\n\n    .greeting {\n      font-size: 15px;\n      margin-bottom: 20px;\n      color: #555;\n    }\n\n    .message-body {\n      background-color: #ffebee;\n      padding: 20px;\n      border-left: 4px solid #d32f2f;\n      margin: 24px 0;\n      color: #444;\n    }\n\n    .divider {\n      border-top: 1px solid #eaeaea;\n      margin: 24px 0;\n    }\n\n    .section-title {\n      font-size: 14px;\n      font-weight: 600;\n      text-transform: uppercase;\n      color: #777;\n      margin-bottom: 12px;\n    }\n\n    .details-table {\n      width: 100%;\n      border-collapse: collapse;\n      margin: 16px 0;\n      background-color: #fafafa;\n    }\n\n    .details-table th {\n      padding: 12px;\n      text-align: left;\n      background-color: #d32f2f;\n      color: #ffffff;\n      font-size: 13px;\n      font-weight: 600;\n      text-transform: uppercase;\n    }\n\n    .details-table td {\n      padding: 12px;\n      vertical-align: top;\n      border-bottom: 1px solid #e0e0e0;\n      font-size: 14px;\n    }\n\n    .status-low {\n      display: inline-block;\n      padding: 4px 10px;\n      background-color: #fff8e1;\n      color: #f9a825;\n      border-radius: 12px;\n      font-size: 12px;\n      font-weight: 600;\n    }\n\n    .action-note {\n      background-color: #fff8e1;\n      border-left: 4px solid #f9a825;\n      padding: 16px;\n      margin: 20px 0;\n      font-size: 14px;\n      color: #8a6d1d;\n    }\n\n    .action-note strong {\n      display: block;\n      margin-bottom: 8px;\n      font-size: 15px;\n    }\n\n    .cta-box {\n      background-color: #e3f2fd;\n      border-left: 4px solid #1976d2;\n      padding: 16px;\n      margin: 20px 0;\n      font-size: 14px;\n      color: #0d47a1;\n    }\n\n    .cta-box strong {\n      display: block;\n      margin-bottom: 8px;\n      font-size: 15px;\n    }\n\n    .footer {\n      margin-top: 32px;\n      padding-top: 20px;\n      border-top: 1px solid #eaeaea;\n      font-size: 13px;\n      color: #888;\n      text-align: center;\n    }\n\n    .footer strong {\n      color: #555;\n    }\n  </style>\n</head>\n<body>\n\n  <div class=\"header\">\n    <h1>⚠️ Urgent: Inventory Stock Alert</h1>\n    <span class=\"status-badge\">Immediate Action Required</span>\n  </div>\n\n  <p class=\"greeting\">\n    Dear IT Admin,\n  </p>\n\n  <div class=\"message-body\">\n    <p style=\"margin-top: 0;\">\n      <strong>Critical Inventory Alert:</strong> The following consumable item has reached or fallen below the minimum stock threshold after the recent system upgrade assignment.\n    </p>\n    <p style=\"margin-bottom: 0;\">\n      Immediate restocking is required to ensure uninterrupted operations and prevent service delays.\n    </p>\n  </div>\n\n  <div class=\"divider\"></div>\n\n  <div class=\"section-title\">Inventory Item Details</div>\n\n  <table class=\"details-table\">\n    <thead>\n      <tr>\n        <th>Field</th>\n        <th>Details</th>\n      </tr>\n    </thead>\n    <tbody>\n      <tr>\n        <td><strong>Item ID</strong></td>\n        <td>{{ $('Updating Consumable Sheet1').item.json.Item_ID }}</td>\n      </tr>\n      <tr>\n        <td><strong>Item Name</strong></td>\n        <td>{{ $('Updating Consumable Sheet1').item.json.Item_Name }}</td>\n      </tr>\n      <tr>\n        <td><strong>Category</strong></td>\n        <td>{{ $('Updating Consumable Sheet1').item.json.Category }}</td>\n      </tr>\n      <tr>\n        <td><strong>Available Quantity</strong></td>\n        <td style=\"color: #d32f2f; font-weight: 600;\">{{ $('Updating Consumable Sheet1').item.json.Available_Qty }}</td>\n      </tr>\n      <tr>\n        <td><strong>Minimum Stock Level</strong></td>\n        <td>{{ $('Updating Consumable Sheet1').item.json.Min_Stock }}</td>\n      </tr>\n      <tr>\n        <td><strong>Status</strong></td>\n        <td><span class=\"status-low\">={{ $('Updating Consumable Sheet1').item.json.Status }}</span></td>\n      </tr>\n      <tr>\n        <td><strong>Vendor</strong></td>\n        <td>{{ $('Updating Consumable Sheet1').item.json.Vendor }}</td>\n      </tr>\n      <tr>\n        <td><strong>Last Purchase Date</strong></td>\n        <td>{{ $('Updating Consumable Sheet1').item.json.Last_Purchase }}</td>\n      </tr>\n    </tbody>\n  </table>\n\n  <div class=\"divider\"></div>\n\n  <div class=\"action-note\">\n    <strong>⚠️ Immediate Action Required:</strong>\n    The available quantity has reached critical levels. Please initiate the procurement process immediately to avoid stockouts and operational disruptions.\n  </div>\n\n  <div class=\"cta-box\">\n    <strong>Next Steps:</strong>\n    <ul style=\"margin: 8px 0 0 0; padding-left: 20px;\">\n      <li>Contact the vendor ({{ $('Updating Consumable Sheet1').item.json.Vendor }}) to place a restock order</li>\n      <li>Verify current pricing and delivery timelines</li>\n      <li>Update the inventory management system once the order is placed</li>\n      <li>Monitor stock levels closely until replenishment arrives</li>\n    </ul>\n  </div>\n\n  <p style=\"color: #555; font-size: 14px; margin-top: 20px;\">\n    If you have any questions or need assistance with the procurement process, please contact the inventory management team immediately.\n  </p>\n\n  <div class=\"footer\">\n    Best regards,<br />\n    <strong>IT Inventory Management System</strong><br />\n    <em>This is an automated alert notification</em>\n  </div>\n\n</body>\n</html>",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        9376,
+        1680
+      ],
+      "id": "8700103d-c3d2-4abf-a0da-e80854308b16",
+      "name": "Inventory Stock Up Alert",
+      "webhookId": "faf9d321-9310-44bd-8187-8e602cff4b59",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "H7g7BDYjBGFvV5G8",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $('Edit Fields').item.json['Email '] }}",
+        "subject": "System Upgrade Request - Component Currently Out of Stock",
+        "message": "=<!DOCTYPE html>\n<html>\n<head>\n  <meta charset=\"UTF-8\" />\n  <style>\n    body {\n      font-family: -apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, Arial, sans-serif;\n      background-color: #ffffff;\n      color: #333;\n      max-width: 600px;\n      margin: 0 auto;\n      padding: 24px;\n      line-height: 1.6;\n    }\n\n    .header {\n      text-align: center;\n      padding: 20px 0;\n      border-bottom: 3px solid #f9a825;\n      margin-bottom: 24px;\n    }\n\n    h1 {\n      font-size: 24px;\n      margin: 0 0 8px 0;\n      color: #f9a825;\n    }\n\n    .status-badge {\n      display: inline-block;\n      padding: 6px 16px;\n      background-color: #fff8e1;\n      color: #f9a825;\n      border-radius: 20px;\n      font-size: 13px;\n      font-weight: 600;\n      text-transform: uppercase;\n      letter-spacing: 0.5px;\n    }\n\n    .greeting {\n      font-size: 15px;\n      margin-bottom: 20px;\n      color: #555;\n    }\n\n    .message-body {\n      background-color: #fff8e1;\n      padding: 20px;\n      border-left: 4px solid #f9a825;\n      margin: 24px 0;\n      color: #444;\n    }\n\n    .divider {\n      border-top: 1px solid #eaeaea;\n      margin: 24px 0;\n    }\n\n    .section-title {\n      font-size: 14px;\n      font-weight: 600;\n      text-transform: uppercase;\n      color: #777;\n      margin-bottom: 12px;\n    }\n\n    .details-table {\n      width: 100%;\n      border-collapse: collapse;\n      margin: 16px 0;\n    }\n\n    .details-table td {\n      padding: 10px 0;\n      vertical-align: top;\n      border-bottom: 1px solid #f0f0f0;\n    }\n\n    .label {\n      color: #777;\n      width: 45%;\n      font-size: 14px;\n      font-weight: 500;\n    }\n\n    .value {\n      font-weight: 600;\n      font-size: 14px;\n      color: #333;\n    }\n\n    .info-box {\n      background-color: #e3f2fd;\n      border-left: 4px solid #1976d2;\n      padding: 16px;\n      margin: 20px 0;\n      font-size: 14px;\n      color: #0d47a1;\n    }\n\n    .info-box strong {\n      display: block;\n      margin-bottom: 8px;\n      font-size: 15px;\n    }\n\n    .footer {\n      margin-top: 32px;\n      padding-top: 20px;\n      border-top: 1px solid #eaeaea;\n      font-size: 13px;\n      color: #888;\n      text-align: center;\n    }\n\n    .footer strong {\n      color: #555;\n    }\n  </style>\n</head>\n<body>\n\n  <div class=\"header\">\n    <h1>System Configuration Upgrade Request</h1>\n    <span class=\"status-badge\">⚠ Temporarily On Hold</span>\n  </div>\n\n  <p class=\"greeting\">\n    Dear {{ $('Edit Fields').item.json['Employee Name'] }},\n  </p>\n\n  <div class=\"message-body\">\n    <p style=\"margin-top: 0;\">\n      We sincerely apologize for the inconvenience. Your system configuration upgrade request has been <strong>approved</strong> by the IT Administration team, however, we regret to inform you that the requested component is <strong>currently out of stock</strong>.\n    </p>\n    <p style=\"margin-bottom: 0;\">\n      While your request has been authorized and prioritized, fulfillment of the upgrade will be temporarily delayed until inventory is replenished.\n    </p>\n  </div>\n\n  <div class=\"divider\"></div>\n\n  <div class=\"section-title\">Request Details</div>\n\n  <table class=\"details-table\">\n    <tr>\n      <td class=\"label\">Employee ID</td>\n      <td class=\"value\">{{ $('Edit Fields').item.json['Employee ID'] }}</td>\n    </tr>\n    <tr>\n      <td class=\"label\">Date of Request</td>\n      <td class=\"value\">{{ $('Edit Fields').item.json['Date of Request'] }}</td>\n    </tr>\n    <tr>\n      <td class=\"label\">Component Requested</td>\n      <td class=\"value\">{{ $('Edit Fields').item.json['Component To Upgrade'] }}</td>\n    </tr>\n    <tr>\n      <td class=\"label\">Performance Impact Rating</td>\n      <td class=\"value\">{{ $('Edit Fields').item.json['Performance Impacting Ratings '] }}/5</td>\n    </tr>\n  </table>\n\n  <div class=\"divider\"></div>\n\n  <div class=\"info-box\">\n    <strong>What happens next?</strong>\n    The IT team is actively working to restock the required component. You will be notified via email as soon as the item becomes available and your upgrade can be scheduled. Your request remains approved and will be prioritized once inventory is replenished.\n  </div>\n\n  <p style=\"color: #555; font-size: 14px;\">\n    We appreciate your patience and understanding during this time. If you have any urgent concerns or questions regarding this delay, please contact the IT Administration team directly.\n  </p>\n\n  <div class=\"footer\">\n    Best regards,<br />\n    <strong>IT Administration Team</strong><br />\n    <em>This is an automated notification from the IT Request Management System</em>\n  </div>\n\n</body>\n</html>",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        6640,
+        2432
+      ],
+      "id": "896985c0-999b-462a-8441-168e07757bbc",
+      "name": "OUT OF STOCK!!!",
+      "webhookId": "a8a2b17e-2b30-4de8-9c7f-28efe4d3f9e9",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "H7g7BDYjBGFvV5G8",
+          "name": "Gmail account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Google Sheets Trigger": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Mail Send For Approval/Rejection To IT Admin",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Mail Send For Approval/Rejection To IT Admin": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Approval Mail",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Rejection Mail",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Rejection Mail": {
+      "main": [
+        [
+          {
+            "node": "Updating Request Log",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Approval Mail": {
+      "main": [
+        [
+          {
+            "node": "Updating Request Log2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Updating Request Log2": {
+      "main": [
+        [
+          {
+            "node": "Filtering Out The Requesting Component Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filtering Out The Requesting Component Data": {
+      "main": [
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Code in JavaScript2",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "OUT OF STOCK!!!",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript": {
+      "main": [
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait": {
+      "main": [
+        [
+          {
+            "node": "Schedule Mail",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Schedule Mail": {
+      "main": [
+        [
+          {
+            "node": "IT Admin Job Completion Confirmation Mail",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "IT Admin Job Completion Confirmation Mail": {
+      "main": [
+        [
+          {
+            "node": "Check If Job Confirmed",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check If Job Confirmed": {
+      "main": [
+        [
+          {
+            "node": "Getting Asset Data",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Wait 15 Minutes",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait 15 Minutes": {
+      "main": [
+        [
+          {
+            "node": "Send Reminder to IT Admin",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send Reminder to IT Admin": {
+      "main": [
+        [
+          {
+            "node": "Check If Job Confirmed",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code Logic Fo Updating Values In Asset Data": {
+      "main": [
+        [
+          {
+            "node": "Update Asset Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Getting Asset Data": {
+      "main": [
+        [
+          {
+            "node": "Code Logic Fo Updating Values In Asset Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update Asset Data": {
+      "main": [
+        [
+          {
+            "node": "Getting Consumable Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Getting Consumable Data": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript1": {
+      "main": [
+        [
+          {
+            "node": "Updating Consumable Sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Updating Consumable Sheet": {
+      "main": [
+        [
+          {
+            "node": "Append row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Schedule Mail1": {
+      "main": [
+        [
+          {
+            "node": "IT Admin Job Completion Confirmation Mail1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript2": {
+      "main": [
+        [
+          {
+            "node": "Wait1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait1": {
+      "main": [
+        [
+          {
+            "node": "Schedule Mail1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "IT Admin Job Completion Confirmation Mail1": {
+      "main": [
+        [
+          {
+            "node": "Check If Job Confirmed1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check If Job Confirmed1": {
+      "main": [
+        [
+          {
+            "node": "Getting Asset Data1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Wait 15 Minutes1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait 15 Minutes1": {
+      "main": [
+        [
+          {
+            "node": "Send Reminder to IT Admin1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send Reminder to IT Admin1": {
+      "main": [
+        [
+          {
+            "node": "Check If Job Confirmed1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code Logic Fo Updating Values In Asset Data1": {
+      "main": [
+        [
+          {
+            "node": "Update Asset Data1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update Asset Data1": {
+      "main": [
+        [
+          {
+            "node": "Getting Consumable Data1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Getting Asset Data1": {
+      "main": [
+        [
+          {
+            "node": "Code Logic Fo Updating Values In Asset Data1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Getting Consumable Data1": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript3": {
+      "main": [
+        [
+          {
+            "node": "Updating Consumable Sheet1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Updating Consumable Sheet1": {
+      "main": [
+        [
+          {
+            "node": "Append row in sheet1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append row in sheet1": {
+      "main": [
+        [
+          {
+            "node": "Inventory Stock Up Alert",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "availableInMCP": false
+  },
+  "versionId": "0c73671b-c56f-44b0-893a-1c2dd8d11762",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "a6e07f0cade65ae3b897c80688dbb4ced8b7ecdd9a4ffd6857ac2c42cfa06487"
+  },
+  "id": "2ilCjuqAGS66QY0X",
+  "tags": []
+}

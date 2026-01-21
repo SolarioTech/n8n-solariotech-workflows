@@ -1,0 +1,757 @@
+{
+  "name": "SolarioTech OffBoarding Workflow",
+  "nodes": [
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyMinute"
+            }
+          ]
+        },
+        "documentId": {
+          "__rl": true,
+          "value": "",
+          "mode": "list",
+          "cachedResultName": "Employee Offboarding Form",
+          "cachedResultUrl": ""
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1244784302,
+          "mode": "list",
+          "cachedResultName": "Form Responses 1",
+          "cachedResultUrl": ""
+        },
+        "event": "rowAdded",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTrigger",
+      "typeVersion": 1,
+      "position": [
+        48,
+        160
+      ],
+      "id": "d246e955-7c2a-49ee-b338-41670980fc3b",
+      "name": "Google Sheets Trigger",
+      "credentials": {
+        "googleSheetsTriggerOAuth2Api": {
+          "id": "4qxKDFstxlLPVWj2",
+          "name": "Google Sheets Trigger account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "",
+          "mode": "list",
+          "cachedResultName": "SolarioTech Asset Data",
+          "cachedResultUrl": ""
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 893909467,
+          "mode": "list",
+          "cachedResultName": "Assets",
+          "cachedResultUrl": ""
+        },
+        "filtersUI": {
+          "values": [
+            {
+              "lookupColumn": "=Assigned_To",
+              "lookupValue": "={{ $json.Employee_ID }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        976,
+        -64
+      ],
+      "id": "2e65d0ce-cb26-47a9-a219-1d4ebe6bb13b",
+      "name": "Filtering The Data From Asset Data",
+      "alwaysOutputData": false,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "C8TGTyiM0cUmgssJ",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// Employee data (from IF node)\nconst employee = $('Checking Employee Status').item.json;\n\n// Asset Policy rows (from Get row(s) in sheet node)\nconst assetPolicies = $('Reading Asset Policy For Role_ID').all().map(item => item.json);\n\n// Employee role\nconst role = employee.Role;\n\n// Find matching policy (case-insensitive with trim)\nconst matchedPolicy = assetPolicies.find(\n  policy => policy.Role.trim().toLowerCase() === role.trim().toLowerCase()\n);\n\nif (!matchedPolicy) {\n  const availableRoles = assetPolicies.map(p => p.Role).join(', ');\n  throw new Error(`Role not found in Asset Policy: ${role}. Available roles: ${availableRoles}`);\n}\n\n// Final output with all asset policy fields\nreturn [\n  {\n    json: {\n      Employee_ID: employee[\"Employee ID\"],\n      Employee_Name: employee[\"Full Name\"],\n      Employee_Role: employee.Role,\n      Employee_Department: employee.Department,\n      Employment_Status: employee[\"Employment Status\"],\n      Assets_Assigned: employee[\"Assets Assigned \"],\n      Role_ID: matchedPolicy.Role_ID,\n    }\n  }\n];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        768,
+        -64
+      ],
+      "id": "c350effc-65c8-4e75-b068-f14b0fbfbc75",
+      "name": "Data Configuration Logic"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "",
+          "mode": "list",
+          "cachedResultName": "Asset Policy",
+          "cachedResultUrl": ""
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 165550314,
+          "mode": "list",
+          "cachedResultName": "Asset_Policy",
+          "cachedResultUrl": ""
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        560,
+        -64
+      ],
+      "id": "4e1baafc-4a48-42f8-88bc-4735a48c51b0",
+      "name": "Reading Asset Policy For Role_ID",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "C8TGTyiM0cUmgssJ",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "de03504e-82bd-495f-8a79-c421c590d967",
+              "leftValue": "={{ $json[\"Employment Status\"] }}",
+              "rightValue": "Resigned",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            },
+            {
+              "id": "404f3368-8f83-4de6-a786-73595e1a84c1",
+              "leftValue": "={{ $json[\"Assets Assigned \"] }}",
+              "rightValue": "Yes",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        256,
+        160
+      ],
+      "id": "c2b75617-b777-400a-8529-9eae605585d4",
+      "name": "Checking Employee Status"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "",
+          "mode": "list",
+          "cachedResultName": "SolarioTech Asset Data",
+          "cachedResultUrl": ""
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 893909467,
+          "mode": "list",
+          "cachedResultName": "Assets",
+          "cachedResultUrl": ""
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Asset_ID": "={{ $json.Asset_ID }}",
+            "Category": "={{ $json.Category }}",
+            "Brand": "={{ $json.Brand }}",
+            "Model": "={{ $json.Model }}",
+            "CPU": "={{ $json.CPU }}",
+            "RAM": "={{ $json.RAM }}",
+            "Storage": "={{ $json.Storage }}",
+            "Serial_No": "={{ $json.Serial_No }}",
+            "Purchase_Date": "={{ $json.Purchase_Date }}",
+            "Warranty_End": "={{ $json.Warranty_End }}",
+            "Asset_Status": "=In-Use",
+            "Employee_Name": "Available",
+            "Condition": "={{ $json.Condition }}",
+            "Location": "={{ $json.Location }}",
+            "Remarks": "={{ $json.Remarks }}",
+            "Assigned_To": "={{ $('Data Configuration Logic').item.json.Role_ID }}"
+          },
+          "matchingColumns": [
+            "Asset_ID"
+          ],
+          "schema": [
+            {
+              "id": "Asset_ID",
+              "displayName": "Asset_ID",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Category",
+              "displayName": "Category",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Brand",
+              "displayName": "Brand",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Model",
+              "displayName": "Model",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "CPU",
+              "displayName": "CPU",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "RAM",
+              "displayName": "RAM",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Storage",
+              "displayName": "Storage",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Serial_No",
+              "displayName": "Serial_No",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Purchase_Date",
+              "displayName": "Purchase_Date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Warranty_End",
+              "displayName": "Warranty_End",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Asset_Status",
+              "displayName": "Asset_Status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Assigned_To",
+              "displayName": "Assigned_To",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Employee_Name",
+              "displayName": "Employee_Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Assigned_Date",
+              "displayName": "Assigned_Date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Condition",
+              "displayName": "Condition",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Location",
+              "displayName": "Location",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Remarks",
+              "displayName": "Remarks",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "readOnly": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        1184,
+        -64
+      ],
+      "id": "7dced777-993a-4346-af15-40316e31034b",
+      "name": "Updating Asset Data",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "C8TGTyiM0cUmgssJ",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "",
+          "mode": "list",
+          "cachedResultName": "SolarioTech Employee Data",
+          "cachedResultUrl": ""
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1227232961,
+          "mode": "list",
+          "cachedResultName": "Employees",
+          "cachedResultUrl": ""
+        },
+        "filtersUI": {
+          "values": [
+            {
+              "lookupColumn": "Employee_ID",
+              "lookupValue": "={{ $('Filtering The Data From Asset Data').item.json.Assigned_To }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        1392,
+        -64
+      ],
+      "id": "8f2444f5-f8b3-4d01-accb-f10ec0ebf914",
+      "name": "Reading Employee Data",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "C8TGTyiM0cUmgssJ",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "delete",
+        "documentId": {
+          "__rl": true,
+          "value": "",
+          "mode": "list",
+          "cachedResultName": "SolarioTech Employee Data",
+          "cachedResultUrl": ""
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1227232961,
+          "mode": "list",
+          "cachedResultName": "Employees",
+          "cachedResultUrl": ""
+        },
+        "startIndex": "={{ $json.row_number }}"
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        1584,
+        -64
+      ],
+      "id": "0db96b7b-df57-4ad8-b983-c9751bf37660",
+      "name": "Delete rows or columns from sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "C8TGTyiM0cUmgssJ",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "ff7315ff-2bc5-4112-9f5e-6b54fba9d7b8",
+              "leftValue": "={{ $json.success }}",
+              "rightValue": true,
+              "operator": {
+                "type": "boolean",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        1824,
+        -64
+      ],
+      "id": "b16e7b07-04ab-424d-ace4-53f93468ecd8",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1_DAzUYfstpc4s_iR4aUl9pnRqAoEU1yICgbCG8l2d7I",
+          "mode": "list",
+          "cachedResultName": "Offboarding Employee Log",
+          "cachedResultUrl": ""
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": ""
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Employee_Name": "={{ $('Reading Employee Data').item.json.Full_Name }}",
+            "Department": "={{ $('Reading Employee Data').item.json.Department }}",
+            "Role": "={{ $('Reading Employee Data').item.json.Role }}",
+            "Assigned_Asset": "Retrieved"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Employee_Name",
+              "displayName": "Employee_Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Department",
+              "displayName": "Department",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Role",
+              "displayName": "Role",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Assigned_Asset",
+              "displayName": "Assigned_Asset",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "DOE",
+              "displayName": "DOE",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        2064,
+        -224
+      ],
+      "id": "53965343-e782-405e-b009-47d4df3a33d8",
+      "name": "Append row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "C8TGTyiM0cUmgssJ",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "",
+        "subject": "Employee Offboarding Completed - Assets Retrieved",
+        "message": "=<html><body><p>Dear HR Team,</p><p>This is to inform you that the offboarding process has been successfully completed for the following employee:</p><table style='border-collapse: collapse; margin: 20px 0;'><tr><td style='padding: 8px; border: 1px solid #ddd;'><strong>Employee Name:</strong></td><td style='padding: 8px; border: 1px solid #ddd;'>{{ $('Reading Employee Data').item.json.Full_Name }}</td></tr><tr><td style='padding: 8px; border: 1px solid #ddd;'><strong>Employee ID:</strong></td><td style='padding: 8px; border: 1px solid #ddd;'>{{ $('Reading Employee Data').item.json.Employee_ID }}</td></tr><tr><td style='padding: 8px; border: 1px solid #ddd;'><strong>Department:</strong></td><td style='padding: 8px; border: 1px solid #ddd;'>{{ $('Reading Employee Data').item.json.Department }}</td></tr><tr><td style='padding: 8px; border: 1px solid #ddd;'><strong>Role:</strong></td><td style='padding: 8px; border: 1px solid #ddd;'>{{ $('Reading Employee Data').item.json.Role }}</td></tr><tr><td style='padding: 8px; border: 1px solid #ddd;'><strong>Asset Status:</strong></td><td style='padding: 8px; border: 1px solid #ddd;'>Retrieved and Available for Reassignment</td></tr></table><p>All assigned company assets have been successfully retrieved and are now available for allocation to new employees.</p><p>The employee record has been updated accordingly in the system.</p><p>Best regards,<br>SolarioTech Offboarding System</p></body></html>",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        2272,
+        -224
+      ],
+      "id": "35ad78bd-4267-49bf-84f8-0d1a7814c407",
+      "name": "Send a message",
+      "webhookId": "809e1d4a-727e-4e46-ac94-e755a92076b0",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "H7g7BDYjBGFvV5G8",
+          "name": "Gmail account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Google Sheets Trigger": {
+      "main": [
+        [
+          {
+            "node": "Checking Employee Status",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Data Configuration Logic": {
+      "main": [
+        [
+          {
+            "node": "Filtering The Data From Asset Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Reading Asset Policy For Role_ID": {
+      "main": [
+        [
+          {
+            "node": "Data Configuration Logic",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Checking Employee Status": {
+      "main": [
+        [
+          {
+            "node": "Reading Asset Policy For Role_ID",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filtering The Data From Asset Data": {
+      "main": [
+        [
+          {
+            "node": "Updating Asset Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Updating Asset Data": {
+      "main": [
+        [
+          {
+            "node": "Reading Employee Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Reading Employee Data": {
+      "main": [
+        [
+          {
+            "node": "Delete rows or columns from sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Delete rows or columns from sheet": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Append row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append row in sheet": {
+      "main": [
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "availableInMCP": false
+  },
+  "versionId": "184d4238-b3e6-4ddd-b3e3-34a6f70dfc25",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "a6e07f0cade65ae3b897c80688dbb4ced8b7ecdd9a4ffd6857ac2c42cfa06487"
+  },
+  "id": "nQodvDS5zrSzbY7o",
+  "tags": []
+}
