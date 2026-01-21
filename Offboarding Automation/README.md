@@ -4,17 +4,17 @@ A comprehensive n8n workflow automation that streamlines the complete employee o
 
 ## 📋 Table of Contents
 
-- [Overview](#overview)
-- [What This Automation Does](#what-this-automation-does)
-- [How It Works](#how-it-works)
-- [Prerequisites](#prerequisites)
-- [Google Sheets Setup](#google-sheets-setup)
-- [Step-by-Step Setup Guide](#step-by-step-setup-guide)
-- [Understanding Each Node](#understanding-each-node)
-- [Testing the Automation](#testing-the-automation)
-- [Troubleshooting](#troubleshooting)
-- [FAQ](#faq)
-- [Best Practices](#best-practices)
+- [Overview](#-overview)
+- [What This Automation Does](#-what-this-automation-does)
+- [How It Works](#-how-it-works)
+- [Prerequisites](#-prerequisites)
+- [Google Sheets Setup](#-google-sheets-setup)
+- [Step-by-Step Setup Guide](#-step-by-step-setup-guide)
+- [Understanding Each Node](#-understanding-each-node)
+- [Testing the Automation](#-testing-the-automation)
+- [Troubleshooting](#-troubleshooting)
+- [FAQ](#-faq)
+- [Best Practices](#-best-practices)
 
 ## 🎯 Overview
 

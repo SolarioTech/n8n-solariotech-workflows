@@ -4,16 +4,16 @@ A comprehensive n8n workflow automation that streamlines the entire employee onb
 
 ## 📋 Table of Contents
 
-- [Overview](#overview)
-- [Features](#features)
-- [Prerequisites](#prerequisites)
-- [Setup Instructions](#setup-instructions)
-- [Workflow Architecture](#workflow-architecture)
-- [Testing](#testing)
-- [Troubleshooting](#troubleshooting)
-- [FAQ](#faq)
-- [Customization Ideas](#customization-ideas)
-- [Best Practices](#best-practices)
+- [Overview](#-overview)
+- [Features](#-features)
+- [Prerequisites](#-prerequisites)
+- [Setup Instructions](#-setup-instructions)
+- [Workflow Architecture](#-workflow-architecture)
+- [Testing](#-testing)
+- [Troubleshooting](#-troubleshooting)
+- [FAQ](#-faq)
+- [Customization Ideas](#-customization-ideas)
+- [Best Practices](#-best-practices)
 
 ## 🎯 Overview
 
