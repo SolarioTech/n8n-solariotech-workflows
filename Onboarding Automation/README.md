@@ -75,9 +75,9 @@ Role | Role_ID | Asset_Type | Required
 
 **Example Data:**
 ```
-Software Engineer     | ROLE-001 | Laptop | Yes
-Marketing Manager     | ROLE-002 | Laptop | Yes
-Sales Representative  | ROLE-003 | Tablet | Yes
+React Native Developer     | RN | Laptop | Yes
+Web Developer     | RJ | Laptop | Yes
+Backend Developer  | NJ | Tablet | Yes
 ```
 
 #### 3. Asset Inventory Sheet
