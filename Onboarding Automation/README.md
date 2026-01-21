@@ -12,7 +12,8 @@ A comprehensive n8n workflow automation that streamlines the entire employee onb
 - [Testing](#testing)
 - [Troubleshooting](#troubleshooting)
 - [FAQ](#faq)
-- [Contributing](#contributing)
+- [Customization Ideas](#customization-ideas)
+- [Best Practices](#best-practices)
 
 ## 🎯 Overview
 
